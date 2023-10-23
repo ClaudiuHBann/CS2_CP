@@ -4,17 +4,6 @@
 #include "Offsets.h"
 #include "Signatures.h"
 
-template <typename T> static inline bool GetDataAddressWithOffset(const DWORD64 &Address, DWORD64 Offset, T &Data)
-{
-    if (Address == 0)
-        return false;
-
-    if (!ProcessManager::ReadMemory<T>(Address + Offset, Data))
-        return false;
-
-    return true;
-}
-
 static DWORD64 SearchOffsets(std::string Signature, DWORD64 ModuleAddress)
 {
     std::vector<DWORD64> TempAddressList;
@@ -41,25 +30,25 @@ static inline bool UpdateOffsets()
 
     DWORD64 TempAddress = 0;
 
-    TempAddress = SearchOffsets(Offsets::Signatures::EntityList, ClientDLL);
+    TempAddress = SearchOffsets(Signatures::EntityList, ClientDLL);
     if (TempAddress == 0)
         return false;
 
     Offsets::dwEntityList = TempAddress - ClientDLL;
 
-    TempAddress = SearchOffsets(Offsets::Signatures::LocalPlayerController, ClientDLL);
+    TempAddress = SearchOffsets(Signatures::LocalPlayerController, ClientDLL);
     if (TempAddress == 0)
         return false;
 
     Offsets::dwLocalPlayerController = TempAddress - ClientDLL;
 
-    TempAddress = SearchOffsets(Offsets::Signatures::LocalPlayerPawn, ClientDLL);
+    TempAddress = SearchOffsets(Signatures::LocalPlayerPawn, ClientDLL);
     if (TempAddress == 0)
         return false;
 
     Offsets::dwLocalPlayerPawn = TempAddress + 0x118 - ClientDLL;
 
-    TempAddress = SearchOffsets(Offsets::Signatures::ForceJump, ClientDLL);
+    TempAddress = SearchOffsets(Signatures::ForceJump, ClientDLL);
     if (TempAddress == 0)
         return false;
 

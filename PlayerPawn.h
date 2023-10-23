@@ -30,22 +30,22 @@ class PlayerPawn
   public:
     bool GetAimPunchAngle()
     {
-        return GetDataAddressWithOffset<Vec2>(Address, Offsets::Entity::aimPunchAngle, this->AimPunchAngle);
+        return ProcessManager::ReadMemory<Vec2>(Address + Offsets::Entity::aimPunchAngle, this->AimPunchAngle);
     }
 
     bool GetTeamID()
     {
-        return GetDataAddressWithOffset<int>(Address, Offsets::Entity::iTeamNum, this->TeamID);
+        return ProcessManager::ReadMemory<int>(Address + Offsets::Entity::iTeamNum, this->TeamID);
     }
 
     bool GetHealth()
     {
-        return GetDataAddressWithOffset<int>(Address, Offsets::Entity::iHealth, this->Health);
+        return ProcessManager::ReadMemory<int>(Address + Offsets::Entity::iHealth, this->Health);
     }
 
     bool GetFFlags()
     {
-        return GetDataAddressWithOffset<int>(Address, Offsets::Entity::fFlags, this->fFlags);
+        return ProcessManager::ReadMemory<int>(Address + Offsets::Entity::fFlags, this->fFlags);
     }
 
     constexpr bool HasFlag(const Flags Flag) const noexcept
