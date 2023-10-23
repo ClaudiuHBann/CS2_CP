@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Offset
+namespace Offsets
 {
 namespace Signatures
 {

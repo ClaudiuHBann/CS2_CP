@@ -41,48 +41,28 @@ static inline bool UpdateOffsets()
 
     DWORD64 TempAddress = 0;
 
-    TempAddress = SearchOffsets(Offset::Signatures::EntityList, ClientDLL);
+    TempAddress = SearchOffsets(Offsets::Signatures::EntityList, ClientDLL);
     if (TempAddress == 0)
         return false;
 
-    Offset::EntityList = TempAddress - ClientDLL;
+    Offsets::dwEntityList = TempAddress - ClientDLL;
 
-    TempAddress = SearchOffsets(Offset::Signatures::LocalPlayerController, ClientDLL);
+    TempAddress = SearchOffsets(Offsets::Signatures::LocalPlayerController, ClientDLL);
     if (TempAddress == 0)
         return false;
 
-    Offset::LocalPlayerController = TempAddress - ClientDLL;
+    Offsets::dwLocalPlayerController = TempAddress - ClientDLL;
 
-    TempAddress = SearchOffsets(Offset::Signatures::ViewMatrix, ClientDLL);
+    TempAddress = SearchOffsets(Offsets::Signatures::LocalPlayerPawn, ClientDLL);
     if (TempAddress == 0)
         return false;
 
-    Offset::Matrix = TempAddress - ClientDLL;
+    Offsets::dwLocalPlayerPawn = TempAddress + 0x118 - ClientDLL;
 
-    TempAddress = SearchOffsets(Offset::Signatures::GlobalVars, ClientDLL);
+    TempAddress = SearchOffsets(Offsets::Signatures::ForceJump, ClientDLL);
     if (TempAddress == 0)
         return false;
 
-    Offset::GlobalVars = TempAddress - ClientDLL;
-
-    TempAddress = SearchOffsets(Offset::Signatures::ViewAngles, ClientDLL);
-    if (TempAddress == 0)
-        return false;
-    if (!ProcessManager::ReadMemory(TempAddress, TempAddress))
-        return false;
-
-    Offset::ViewAngle = TempAddress + 0x4510 - ClientDLL;
-
-    TempAddress = SearchOffsets(Offset::Signatures::LocalPlayerPawn, ClientDLL);
-    if (TempAddress == 0)
-        return false;
-
-    Offset::LocalPlayerPawn = TempAddress + 0x118 - ClientDLL;
-
-    TempAddress = SearchOffsets(Offset::Signatures::ForceJump, ClientDLL);
-    if (TempAddress == 0)
-        return false;
-
-    Offset::ForceJump = TempAddress + 0x30 - ClientDLL;
+    Offsets::dwForceJump = TempAddress + 0x30 - ClientDLL;
     return true;
 }

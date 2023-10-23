@@ -25,13 +25,10 @@ class CGame
     {
         this->Address.ClientDLL = reinterpret_cast<DWORD64>(ProcessManager::GetProcessModuleHandle("client.dll"));
 
-        this->Address.EntityList = GetClientDLLAddress() + Offset::EntityList;
-        this->Address.Matrix = GetClientDLLAddress() + Offset::Matrix;
-        this->Address.ViewAngle = GetClientDLLAddress() + Offset::ViewAngle;
-        this->Address.LocalController = GetClientDLLAddress() + Offset::LocalPlayerController;
-        this->Address.LocalPawn = GetClientDLLAddress() + Offset::LocalPlayerPawn;
-        this->Address.ForceJump = GetClientDLLAddress() + Offset::ForceJump;
-        this->Address.GlobalVars = GetClientDLLAddress() + Offset::GlobalVars;
+        this->Address.EntityList = GetClientDLLAddress() + Offsets::dwEntityList;
+        this->Address.LocalController = GetClientDLLAddress() + Offsets::dwLocalPlayerController;
+        this->Address.LocalPawn = GetClientDLLAddress() + Offsets::dwLocalPlayerPawn;
+        this->Address.ForceJump = GetClientDLLAddress() + Offsets::dwForceJump;
 
         return this->Address.ClientDLL != 0;
     }

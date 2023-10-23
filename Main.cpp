@@ -60,7 +60,7 @@ int main()
         }
 
         float duration{};
-        ProcessManager::WriteMemory(LocalEntity.Pawn.Address + Offset::Pawn.flFlashDuration, duration);
+        ProcessManager::WriteMemory(LocalEntity.Pawn.Address + Offsets::Entity::flFlashDuration, duration);
     }
 
     return 0;

@@ -17,31 +17,17 @@ class PlayerController
   public:
     bool GetTeamID()
     {
-        return GetDataAddressWithOffset<int>(Address, Offset::Entity.TeamID, this->TeamID);
+        return GetDataAddressWithOffset<int>(Address, Offsets::Entity::iTeamNum, this->TeamID);
     }
 
     bool GetHealth()
     {
-        return GetDataAddressWithOffset<int>(Address, Offset::Entity.Health, this->Health);
+        return GetDataAddressWithOffset<int>(Address, Offsets::Entity::iHealth, this->Health);
     }
 
     bool GetIsAlive()
     {
-        return GetDataAddressWithOffset<int>(Address, Offset::Entity.IsAlive, this->AliveStatus);
-    }
-
-    bool GetPlayerName()
-    {
-        char Buffer[MAX_PATH]{};
-
-        if (!ProcessManager::ReadMemory(Address + Offset::Entity.iszPlayerName, Buffer, MAX_PATH))
-            return false;
-
-        this->PlayerName = Buffer;
-        if (this->PlayerName.empty())
-            this->PlayerName = "Name_None";
-
-        return true;
+        return GetDataAddressWithOffset<int>(Address, Offsets::Entity::bIsAlive, this->AliveStatus);
     }
 
     DWORD64 GetPlayerPawnAddress()
@@ -49,7 +35,7 @@ class PlayerController
         DWORD64 EntityPawnListEntry = 0;
         DWORD64 EntityPawnAddress = 0;
 
-        if (!GetDataAddressWithOffset<DWORD64>(Address, Offset::Entity.PlayerPawn, this->Pawn))
+        if (!GetDataAddressWithOffset<DWORD64>(Address, Offsets::hPlayerPawn, this->Pawn))
             return 0;
 
         if (!ProcessManager::ReadMemory<DWORD64>(gGame.GetEntityListAddress(), EntityPawnListEntry))
