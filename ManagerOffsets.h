@@ -8,31 +8,27 @@
 class ManagerOffsets : public IManager
 {
     ManagerProcess &mManagerProcess;
-    ManagerSignatures &mManagerSignatures;
 
   public:
-    ManagerOffsets(ManagerProcess &aManagerProcess, ManagerSignatures &aManagerSignatures)
-        : mManagerProcess(aManagerProcess), mManagerSignatures(aManagerSignatures)
+    ManagerOffsets(ManagerProcess &aManagerProcess) : mManagerProcess(aManagerProcess)
     {
     }
 
     [[nodiscard]] inline std::uintptr_t SearchSignature(const std::string &aSignature,
                                                         const ManagerProcess::Module &aModule)
     {
-        const auto addresses =
-            mManagerSignatures.SearchMemory(aSignature, aModule.mBase, aModule.mBase + aModule.mSize);
-        if (addresses.empty())
-        {
-            return {};
-        }
+        auto buffer = new unsigned char[aModule.mSize];
+        mManagerProcess.ReadMemoryBuffer(aModule.mBase, buffer, aModule.mSize);
+
+        const auto address = aModule.mBase + SearchMemory(aSignature.c_str(), buffer, aModule.mSize);
 
         uint32_t offset{};
-        if (!mManagerProcess.ReadMemory(addresses.front() + 3, offset))
+        if (!mManagerProcess.ReadMemory(address + 3, offset))
         {
             return {};
         }
 
-        return addresses.front() + offset + 7;
+        return address + offset + 7;
     }
 
     [[nodiscard]] inline void Initialize() override

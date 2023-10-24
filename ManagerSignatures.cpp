@@ -1,86 +1,51 @@
 #include "pch.h"
 #include "ManagerSignatures.h"
-#include "ManagerProcess.h"
 
-void ManagerSignatures::SearchMemoryBlock(unsigned char *MemoryBuffer, const std::vector<short> &NextArray,
-                                          const std::vector<WORD> &SignatureArray, DWORD64 StartAddress, DWORD64 Size,
-                                          std::vector<DWORD64> &ResultArray)
+std::uintptr_t SearchMemory(const char *signature, void *module, size_t size)
 {
-    if (!mManagerProcess.ReadMemoryBuffer(StartAddress, MemoryBuffer, Size))
-        return;
+    static auto pattern_to_byte = [](const char *pattern) {
+        auto bytes = std::vector<int>{};
+        auto start = const_cast<char *>(pattern);
+        auto end = const_cast<char *>(pattern) + strlen(pattern);
 
-    auto SignatureLength = SignatureArray.size();
-
-    for (int i = 0, j, k; i < Size;)
-    {
-        j = i;
-        k = 0;
-
-        for (; k < SignatureLength && j < Size && (SignatureArray[k] == MemoryBuffer[j] || SignatureArray[k] == 256);
-             k++, j++)
-            ;
-
-        if (k == SignatureLength)
-            ResultArray.push_back(StartAddress + i);
-
-        if ((i + SignatureLength) >= Size)
-            return;
-
-        int Num = NextArray[MemoryBuffer[i + SignatureLength]];
-        if (Num == -1)
-            i += ((int)SignatureLength - NextArray[256]);
-        else
-            i += ((int)SignatureLength - Num);
-    }
-}
-
-std::vector<uintptr_t> ManagerSignatures::SearchMemory(const std::string &Signature, uintptr_t StartAddress,
-                                                       uintptr_t EndAddress, int SearchNum)
-{
-    static const DWORD BLOCKMAXSIZE = 409600;
-
-    std::vector<DWORD64> ResultArray;
-    std::vector<WORD> SignatureArray;
-    std::vector<short> NextArray(260, -1);
-
-    unsigned char *MemoryBuffer = new unsigned char[BLOCKMAXSIZE];
-
-    if (GetSignatureArray(Signature, SignatureArray) <= 0)
-        return ResultArray;
-
-    GetNextArray(NextArray, SignatureArray);
-
-    MEMORY_BASIC_INFORMATION mbi;
-    int Count;
-    while (VirtualQueryEx(mManagerProcess.GetProcess(), reinterpret_cast<LPCVOID>(StartAddress), &mbi, sizeof(mbi)) !=
-           0)
-    {
-        Count = 0;
-        auto BlockSize = (DWORD64)mbi.RegionSize;
-
-        while (BlockSize >= BLOCKMAXSIZE)
+        for (auto current = start; current < end; ++current)
         {
-            if (ResultArray.size() >= SearchNum)
-                goto END;
-
-            SearchMemoryBlock(MemoryBuffer, NextArray, SignatureArray, StartAddress + (BLOCKMAXSIZE * Count),
-                              BLOCKMAXSIZE, ResultArray);
-
-            BlockSize -= BLOCKMAXSIZE;
-            Count++;
+            if (*current == '?')
+            {
+                ++current;
+                if (*current == '?')
+                    ++current;
+                bytes.push_back(-1);
+            }
+            else
+            {
+                bytes.push_back(strtoul(current, &current, 16));
+            }
         }
+        return bytes;
+    };
 
-        SearchMemoryBlock(MemoryBuffer, NextArray, SignatureArray, StartAddress + (BLOCKMAXSIZE * Count), BlockSize,
-                          ResultArray);
+    auto patternBytes = pattern_to_byte(signature);
+    auto scanBytes = reinterpret_cast<std::uint8_t *>(module);
 
-        StartAddress += mbi.RegionSize;
+    auto s = patternBytes.size();
+    auto d = patternBytes.data();
 
-        if (ResultArray.size() >= SearchNum || EndAddress != 0 && StartAddress > EndAddress)
-            break;
+    for (auto i = 0ul; i < size - s; ++i)
+    {
+        bool found = true;
+        for (auto j = 0ul; j < s; ++j)
+        {
+            if (scanBytes[i + j] != d[j] && d[j] != -1)
+            {
+                found = false;
+                break;
+            }
+        }
+        if (found)
+        {
+            return i;
+        }
     }
-
-END:
-
-    delete[] MemoryBuffer;
-    return ResultArray;
+    return {};
 }

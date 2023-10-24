@@ -3,8 +3,8 @@
 // win32
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
-
-#include <Tlhelp32.h>
+// TlHelp32.h must be under Windows.h
+#include <TlHelp32.h>
 
 // std
 #include <functional>
