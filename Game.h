@@ -23,7 +23,8 @@ class CGame
   public:
     bool InitAddress()
     {
-        this->Address.ClientDLL = reinterpret_cast<DWORD64>(ProcessManager::GetProcessModuleHandle("client.dll"));
+        size_t size;
+        this->Address.ClientDLL = reinterpret_cast<DWORD64>(ProcessManager::GetProcessModuleHandle("client.dll", size));
 
         this->Address.EntityList = GetClientDLLAddress() + Offsets::dwEntityList;
         this->Address.LocalController = GetClientDLLAddress() + Offsets::dwLocalPlayerController;
@@ -88,9 +89,9 @@ class CGame
 
     bool SetViewAngle(float Yaw, float Pitch)
     {
-        Vec2 Angle{Pitch, Yaw};
+        Vector2f Angle{Pitch, Yaw};
 
-        if (!ProcessManager::WriteMemory<Vec2>(this->Address.ViewAngle, Angle))
+        if (!ProcessManager::WriteMemory<Vector2f>(this->Address.ViewAngle, Angle))
             return false;
 
         return true;

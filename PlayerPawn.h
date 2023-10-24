@@ -13,14 +13,11 @@ class PlayerPawn
     };
 
     DWORD64 Address = 0;
-    Vec2 ViewAngle;
-    Vec3 Pos;
-    Vec2 ScreenPos;
-    Vec3 CameraPos;
+    Vector2f ViewAngle;
+    Vector2f ScreenPos;
     std::string WeaponName;
     DWORD64 ShotsFired;
-    Vec2 AimPunchAngle;
-    C_UTL_VECTOR AimPunchCache;
+    Vector2f AimPunchAngle;
     int Health;
     int TeamID;
     int Fov;
@@ -30,7 +27,7 @@ class PlayerPawn
   public:
     bool GetAimPunchAngle()
     {
-        return ProcessManager::ReadMemory<Vec2>(Address + Offsets::Entity::aimPunchAngle, this->AimPunchAngle);
+        return ProcessManager::ReadMemory<Vector2f>(Address + Offsets::Entity::aimPunchAngle, this->AimPunchAngle);
     }
 
     bool GetTeamID()

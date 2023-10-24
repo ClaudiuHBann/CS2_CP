@@ -25,7 +25,8 @@ class ProcessManager
     {
         ProcessID = GetProcessID(ProcessName);
         hProcess = OpenProcess(PROCESS_ALL_ACCESS | PROCESS_CREATE_THREAD, TRUE, ProcessID);
-        ModuleAddress = reinterpret_cast<DWORD64>(GetProcessModuleHandle(ProcessName));
+        size_t size;
+        ModuleAddress = reinterpret_cast<DWORD64>(GetProcessModuleHandle(ProcessName, size));
 
         Attached = true;
         return true;
@@ -164,7 +165,7 @@ class ProcessManager
         return 0;
     }
 
-    static HMODULE GetProcessModuleHandle(std::string ModuleName)
+    static HMODULE GetProcessModuleHandle(std::string ModuleName, size_t &size)
     {
         MODULEENTRY32 ModuleInfoPE;
         ModuleInfoPE.dwSize = sizeof(MODULEENTRY32);
@@ -176,6 +177,7 @@ class ProcessManager
             if (strcmp(W2A(ModuleInfoPE.szModule), ModuleName.c_str()) == 0)
             {
                 CloseHandle(hSnapshot);
+                size = ModuleInfoPE.modBaseSize;
                 return ModuleInfoPE.hModule;
             }
         } while (Module32Next(hSnapshot, &ModuleInfoPE));
