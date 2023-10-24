@@ -7,7 +7,6 @@
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="PlayerController.cpp" />
     <ClCompile Include="PlayerPawn.cpp" />
-    <ClCompile Include="Signatures.cpp" />
     <ClCompile Include="Vector.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="ManagerOffsets.cpp">
@@ -19,6 +18,7 @@
     <ClCompile Include="ManagerSignatures.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
+    <ClCompile Include="Signatures.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entity.h" />
@@ -27,7 +27,6 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="PlayerController.h" />
     <ClInclude Include="PlayerPawn.h" />
-    <ClInclude Include="Signatures.h" />
     <ClInclude Include="Vector.h" />
     <ClInclude Include="ManagerSignatures.h">
       <Filter>Manager</Filter>
@@ -38,6 +37,7 @@
     <ClInclude Include="ManagerProcess.h">
       <Filter>Manager</Filter>
     </ClInclude>
+    <ClInclude Include="Signatures.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Manager">

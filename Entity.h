@@ -9,6 +9,10 @@ class CEntity
     PlayerController Controller;
     PlayerPawn Pawn;
 
+    CEntity(ManagerProcess &aManagerProcess, CGame &aGame) : Controller(aManagerProcess, aGame), Pawn(aManagerProcess)
+    {
+    }
+
   public:
     bool UpdateController(const DWORD64 &PlayerControllerAddress)
     {

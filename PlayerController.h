@@ -14,20 +14,27 @@ class PlayerController
     DWORD64 Pawn = 0;
     std::string PlayerName;
 
+    ManagerProcess &mManagerProcess;
+    CGame &mGame;
+
+    PlayerController(ManagerProcess &aManagerProcess, CGame &aGame) : mManagerProcess(aManagerProcess), mGame(aGame)
+    {
+    }
+
   public:
     bool GetTeamID()
     {
-        return ProcessManager::ReadMemory<int>(Address + Offsets::Entity::iTeamNum, this->TeamID);
+        return mManagerProcess.ReadMemory<int>(Address + Offsets::Entity::iTeamNum, this->TeamID);
     }
 
     bool GetHealth()
     {
-        return ProcessManager::ReadMemory<int>(Address + Offsets::Entity::iHealth, this->Health);
+        return mManagerProcess.ReadMemory<int>(Address + Offsets::Entity::iHealth, this->Health);
     }
 
     bool GetIsAlive()
     {
-        return ProcessManager::ReadMemory<int>(Address + Offsets::Entity::bIsAlive, this->AliveStatus);
+        return mManagerProcess.ReadMemory<int>(Address + Offsets::Entity::bIsAlive, this->AliveStatus);
     }
 
     DWORD64 GetPlayerPawnAddress()
@@ -35,17 +42,17 @@ class PlayerController
         DWORD64 EntityPawnListEntry = 0;
         DWORD64 EntityPawnAddress = 0;
 
-        if (!ProcessManager::ReadMemory<DWORD64>(Address + Offsets::hPlayerPawn, this->Pawn))
+        if (!mManagerProcess.ReadMemory<DWORD64>(Address + Offsets::hPlayerPawn, this->Pawn))
             return 0;
 
-        if (!ProcessManager::ReadMemory<DWORD64>(gGame.GetEntityListAddress(), EntityPawnListEntry))
+        if (!mManagerProcess.ReadMemory<DWORD64>(mGame.GetEntityListAddress(), EntityPawnListEntry))
             return 0;
 
-        if (!ProcessManager::ReadMemory<DWORD64>(EntityPawnListEntry + 0x10 + 8 * ((Pawn & 0x7FFF) >> 9),
+        if (!mManagerProcess.ReadMemory<DWORD64>(EntityPawnListEntry + 0x10 + 8 * ((Pawn & 0x7FFF) >> 9),
                                                  EntityPawnListEntry))
             return 0;
 
-        if (!ProcessManager::ReadMemory<DWORD64>(EntityPawnListEntry + 0x78 * (Pawn & 0x1FF), EntityPawnAddress))
+        if (!mManagerProcess.ReadMemory<DWORD64>(EntityPawnListEntry + 0x78 * (Pawn & 0x1FF), EntityPawnAddress))
             return 0;
 
         return EntityPawnAddress;

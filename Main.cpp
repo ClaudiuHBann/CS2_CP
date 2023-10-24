@@ -6,26 +6,28 @@
 
 int main()
 {
-    ProcessManager::Attach("cs2.exe");
-    ManagerOffsets::Initialize();
+    ManagerProcess managerProcess;
+    managerProcess.Attach(L"cs2.exe");
+    ManagerOffsets managerOffsets(managerProcess);
+    managerOffsets.Initialize();
+    CGame gGame(managerProcess);
     gGame.InitAddress();
 
     while (true)
     {
-
         // Update EntityList Entry
         gGame.UpdateEntityListEntry();
 
         DWORD64 LocalControllerAddress = 0;
         DWORD64 LocalPawnAddress = 0;
 
-        if (!ProcessManager::ReadMemory(gGame.GetLocalControllerAddress(), LocalControllerAddress))
+        if (!managerProcess.ReadMemory(gGame.GetLocalControllerAddress(), LocalControllerAddress))
             continue;
-        if (!ProcessManager::ReadMemory(gGame.GetLocalPawnAddress(), LocalPawnAddress))
+        if (!managerProcess.ReadMemory(gGame.GetLocalPawnAddress(), LocalPawnAddress))
             continue;
 
         // LocalEntity
-        CEntity LocalEntity;
+        CEntity LocalEntity(managerProcess, gGame);
         static int LocalPlayerControllerIndex = 1;
         if (!LocalEntity.UpdateController(LocalControllerAddress))
             continue;
@@ -35,9 +37,9 @@ int main()
         // AimBot data
         for (int i = 0; i < 64; i++)
         {
-            CEntity Entity;
+            CEntity Entity(managerProcess, gGame);
             DWORD64 EntityAddress = 0;
-            if (!ProcessManager::ReadMemory<DWORD64>(gGame.GetEntityListEntry() + (i + 1) * 0x78, EntityAddress))
+            if (!managerProcess.ReadMemory<DWORD64>(gGame.GetEntityListEntry() + (i + 1) * 0x78, EntityAddress))
                 continue;
 
             if (EntityAddress == LocalEntity.Controller.Address)
@@ -60,7 +62,7 @@ int main()
         }
 
         float duration{};
-        ProcessManager::WriteMemory(LocalEntity.Pawn.Address + Offsets::Entity::flFlashDuration, duration);
+        managerProcess.WriteMemory(LocalEntity.Pawn.Address + Offsets::Entity::flFlashDuration, duration);
     }
 
     return 0;

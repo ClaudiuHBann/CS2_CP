@@ -24,25 +24,31 @@ class PlayerPawn
     DWORD64 bSpottedByMask;
     int fFlags;
 
+    PlayerPawn(ManagerProcess &aManagerProcess) : mManagerProcess(aManagerProcess)
+    {
+    }
+
+    ManagerProcess &mManagerProcess;
+
   public:
     bool GetAimPunchAngle()
     {
-        return ProcessManager::ReadMemory<Vector2f>(Address + Offsets::Entity::aimPunchAngle, this->AimPunchAngle);
+        return mManagerProcess.ReadMemory<Vector2f>(Address + Offsets::Entity::aimPunchAngle, this->AimPunchAngle);
     }
 
     bool GetTeamID()
     {
-        return ProcessManager::ReadMemory<int>(Address + Offsets::Entity::iTeamNum, this->TeamID);
+        return mManagerProcess.ReadMemory<int>(Address + Offsets::Entity::iTeamNum, this->TeamID);
     }
 
     bool GetHealth()
     {
-        return ProcessManager::ReadMemory<int>(Address + Offsets::Entity::iHealth, this->Health);
+        return mManagerProcess.ReadMemory<int>(Address + Offsets::Entity::iHealth, this->Health);
     }
 
     bool GetFFlags()
     {
-        return ProcessManager::ReadMemory<int>(Address + Offsets::Entity::fFlags, this->fFlags);
+        return mManagerProcess.ReadMemory<int>(Address + Offsets::Entity::fFlags, this->fFlags);
     }
 
     constexpr bool HasFlag(const Flags Flag) const noexcept

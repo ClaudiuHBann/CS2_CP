@@ -6,18 +6,25 @@
 
 class ManagerOffsets
 {
+    ManagerProcess &mManagerProcess;
+
   public:
-    [[nodiscard]] static inline std::uintptr_t SearchSignature(const std::string &aSignature,
-                                                               const ProcessManager::Module &aModule)
+    ManagerOffsets(ManagerProcess &aManagerProcess) : mManagerProcess(aManagerProcess)
     {
-        const auto addresses = ProcessManager::SearchMemory(aSignature, aModule.mBase, aModule.mBase + aModule.mSize);
+    }
+
+    [[nodiscard]] inline std::uintptr_t SearchSignature(const std::string &aSignature,
+                                                        const ManagerProcess::Module &aModule)
+    {
+        const auto addresses = SearchMemory(mManagerProcess, mManagerProcess.GetProcess(), aSignature, aModule.mBase,
+                                            aModule.mBase + aModule.mSize);
         if (addresses.empty())
         {
             return {};
         }
 
         uint32_t offset{};
-        if (!ProcessManager::ReadMemory(addresses.front() + 3, offset))
+        if (!mManagerProcess.ReadMemory(addresses.front() + 3, offset))
         {
             return {};
         }
@@ -25,9 +32,9 @@ class ManagerOffsets
         return addresses.front() + offset + 7;
     }
 
-    [[nodiscard]] static inline void Initialize()
+    [[nodiscard]] inline void Initialize()
     {
-        const auto moduleClientDLL = ProcessManager::GetProcessModuleHandle("client.dll");
+        const auto &moduleClientDLL = mManagerProcess.GetModuleClient();
         if (!moduleClientDLL.mBase)
         {
             return;
@@ -40,9 +47,9 @@ class ManagerOffsets
         Offsets::dwLocalPlayerController = address - moduleClientDLL.mBase;
 
         address = SearchSignature(Signatures::LocalPlayerPawn, moduleClientDLL);
-        Offsets::dwLocalPlayerPawn = address + 0x118 - moduleClientDLL.mBase;
+        Offsets::dwLocalPlayerPawn = address - moduleClientDLL.mBase + 0x118;
 
         address = SearchSignature(Signatures::ForceJump, moduleClientDLL);
-        Offsets::dwForceJump = address + 0x30 - moduleClientDLL.mBase;
+        Offsets::dwForceJump = address - moduleClientDLL.mBase + 0x30;
     }
 };

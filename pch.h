@@ -5,7 +5,6 @@
 #include <Windows.h>
 
 #include <Tlhelp32.h>
-#include <atlconv.h>
 
 // std
 #include <string>

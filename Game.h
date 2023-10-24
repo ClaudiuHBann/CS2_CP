@@ -20,10 +20,16 @@ class CGame
         DWORD64 GlobalVars;
     } Address;
 
+    ManagerProcess &mManagerProcess;
+
   public:
+    CGame(ManagerProcess &aManagerProcess) : mManagerProcess(aManagerProcess)
+    {
+    }
+
     bool InitAddress()
     {
-        this->Address.ClientDLL = ProcessManager::GetProcessModuleHandle("client.dll").mBase;
+        this->Address.ClientDLL = mManagerProcess.GetModuleClient().mBase;
 
         this->Address.EntityList = GetClientDLLAddress() + Offsets::dwEntityList;
         this->Address.LocalController = GetClientDLLAddress() + Offsets::dwLocalPlayerController;
@@ -76,9 +82,9 @@ class CGame
     bool UpdateEntityListEntry()
     {
         DWORD64 EntityListEntry = 0;
-        if (!ProcessManager::ReadMemory<DWORD64>(GetEntityListAddress(), EntityListEntry))
+        if (!mManagerProcess.ReadMemory<DWORD64>(GetEntityListAddress(), EntityListEntry))
             return false;
-        if (!ProcessManager::ReadMemory<DWORD64>(EntityListEntry + 0x10, EntityListEntry))
+        if (!mManagerProcess.ReadMemory<DWORD64>(EntityListEntry + 0x10, EntityListEntry))
             return false;
 
         this->Address.EntityListEntry = EntityListEntry;
@@ -90,7 +96,7 @@ class CGame
     {
         Vector2f Angle{Pitch, Yaw};
 
-        if (!ProcessManager::WriteMemory<Vector2f>(this->Address.ViewAngle, Angle))
+        if (!mManagerProcess.WriteMemory<Vector2f>(this->Address.ViewAngle, Angle))
             return false;
 
         return true;
@@ -98,9 +104,9 @@ class CGame
 
     bool SetForceJump(int value)
     {
-        if (!ProcessManager::WriteMemory<int>(this->Address.ForceJump, value))
+        if (!mManagerProcess.WriteMemory<int>(this->Address.ForceJump, value))
             return false;
 
         return true;
     }
-} static gGame;
+};
