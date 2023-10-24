@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Game.h"
+#include "ManagerGame.h"
 #include "ManagerOffsets.h"
 #include "Offsets.h"
 
@@ -15,9 +15,10 @@ class PlayerController
     std::string PlayerName;
 
     ManagerProcess &mManagerProcess;
-    CGame &mGame;
+    ManagerGame &mManagerGame;
 
-    PlayerController(ManagerProcess &aManagerProcess, CGame &aGame) : mManagerProcess(aManagerProcess), mGame(aGame)
+    PlayerController(ManagerProcess &aManagerProcess, ManagerGame &aManagerGame)
+        : mManagerProcess(aManagerProcess), mManagerGame(aManagerGame)
     {
     }
 
@@ -45,7 +46,7 @@ class PlayerController
         if (!mManagerProcess.ReadMemory<DWORD64>(Address + Offsets::hPlayerPawn, this->Pawn))
             return 0;
 
-        if (!mManagerProcess.ReadMemory<DWORD64>(mGame.GetEntityListAddress(), EntityPawnListEntry))
+        if (!mManagerProcess.ReadMemory<DWORD64>(mManagerGame.GetEntityListAddress(), EntityPawnListEntry))
             return 0;
 
         if (!mManagerProcess.ReadMemory<DWORD64>(EntityPawnListEntry + 0x10 + 8 * ((Pawn & 0x7FFF) >> 9),

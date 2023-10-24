@@ -7,10 +7,12 @@
 #include <Tlhelp32.h>
 
 // std
+#include <functional>
 #include <string>
 #include <vector>
 
 /*
     TODO:
          - remove std from uintptr_t and size_t and ptrdiff_t
+         - IScript base class with pure virtual func Run with ScriptAntiFlashbang and a ManagerScripts
 */

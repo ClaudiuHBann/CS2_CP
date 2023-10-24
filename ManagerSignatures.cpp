@@ -2,11 +2,11 @@
 #include "ManagerSignatures.h"
 #include "ManagerProcess.h"
 
-void SearchMemoryBlock(ManagerProcess &aManagerProcess, unsigned char *MemoryBuffer,
-                       const std::vector<short> &NextArray, const std::vector<WORD> &SignatureArray,
-                       DWORD64 StartAddress, DWORD64 Size, std::vector<DWORD64> &ResultArray)
+void ManagerSignatures::SearchMemoryBlock(unsigned char *MemoryBuffer, const std::vector<short> &NextArray,
+                                          const std::vector<WORD> &SignatureArray, DWORD64 StartAddress, DWORD64 Size,
+                                          std::vector<DWORD64> &ResultArray)
 {
-    if (!aManagerProcess.ReadMemory(StartAddress, *MemoryBuffer, (int)Size))
+    if (!mManagerProcess.ReadMemoryBuffer(StartAddress, MemoryBuffer, Size))
         return;
 
     auto SignatureLength = SignatureArray.size();
@@ -34,8 +34,8 @@ void SearchMemoryBlock(ManagerProcess &aManagerProcess, unsigned char *MemoryBuf
     }
 }
 
-std::vector<uintptr_t> SearchMemory(ManagerProcess &aManagerProcess, HANDLE mProcess, const std::string &Signature,
-                                    uintptr_t StartAddress, uintptr_t EndAddress, int SearchNum)
+std::vector<uintptr_t> ManagerSignatures::SearchMemory(const std::string &Signature, uintptr_t StartAddress,
+                                                       uintptr_t EndAddress, int SearchNum)
 {
     static const DWORD BLOCKMAXSIZE = 409600;
 
@@ -52,7 +52,8 @@ std::vector<uintptr_t> SearchMemory(ManagerProcess &aManagerProcess, HANDLE mPro
 
     MEMORY_BASIC_INFORMATION mbi;
     int Count;
-    while (VirtualQueryEx(mProcess, reinterpret_cast<LPCVOID>(StartAddress), &mbi, sizeof(mbi)) != 0)
+    while (VirtualQueryEx(mManagerProcess.GetProcess(), reinterpret_cast<LPCVOID>(StartAddress), &mbi, sizeof(mbi)) !=
+           0)
     {
         Count = 0;
         auto BlockSize = (DWORD64)mbi.RegionSize;
@@ -62,15 +63,15 @@ std::vector<uintptr_t> SearchMemory(ManagerProcess &aManagerProcess, HANDLE mPro
             if (ResultArray.size() >= SearchNum)
                 goto END;
 
-            SearchMemoryBlock(aManagerProcess, MemoryBuffer, NextArray, SignatureArray,
-                              StartAddress + (BLOCKMAXSIZE * Count), BLOCKMAXSIZE, ResultArray);
+            SearchMemoryBlock(MemoryBuffer, NextArray, SignatureArray, StartAddress + (BLOCKMAXSIZE * Count),
+                              BLOCKMAXSIZE, ResultArray);
 
             BlockSize -= BLOCKMAXSIZE;
             Count++;
         }
 
-        SearchMemoryBlock(aManagerProcess, MemoryBuffer, NextArray, SignatureArray,
-                          StartAddress + (BLOCKMAXSIZE * Count), BlockSize, ResultArray);
+        SearchMemoryBlock(MemoryBuffer, NextArray, SignatureArray, StartAddress + (BLOCKMAXSIZE * Count), BlockSize,
+                          ResultArray);
 
         StartAddress += mbi.RegionSize;
 

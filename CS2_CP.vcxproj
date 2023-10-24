@@ -148,10 +148,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Entity.cpp" />
-    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="ManagerGame.cpp" />
+    <ClCompile Include="IManager.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="ManagerOffsets.cpp" />
     <ClCompile Include="ManagerProcess.cpp" />
+    <ClCompile Include="Context.cpp" />
     <ClCompile Include="ManagerSignatures.cpp" />
     <ClCompile Include="Offsets.cpp" />
     <ClCompile Include="pch.cpp">
@@ -167,9 +169,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entity.h" />
-    <ClInclude Include="Game.h" />
+    <ClInclude Include="ManagerGame.h" />
+    <ClInclude Include="IManager.h" />
     <ClInclude Include="ManagerOffsets.h" />
     <ClInclude Include="ManagerProcess.h" />
+    <ClInclude Include="Context.h" />
     <ClInclude Include="ManagerSignatures.h" />
     <ClInclude Include="Offsets.h" />
     <ClInclude Include="pch.h" />

@@ -9,7 +9,8 @@ class CEntity
     PlayerController Controller;
     PlayerPawn Pawn;
 
-    CEntity(ManagerProcess &aManagerProcess, CGame &aGame) : Controller(aManagerProcess, aGame), Pawn(aManagerProcess)
+    CEntity(ManagerProcess &aManagerProcess, ManagerGame &aManagerGame)
+        : Controller(aManagerProcess, aManagerGame), Pawn(aManagerProcess)
     {
     }
 

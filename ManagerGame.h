@@ -4,7 +4,7 @@
 #include "Offsets.h"
 #include "Vector.h"
 
-class CGame
+class ManagerGame : public IManager
 {
   private:
     struct
@@ -23,11 +23,11 @@ class CGame
     ManagerProcess &mManagerProcess;
 
   public:
-    CGame(ManagerProcess &aManagerProcess) : mManagerProcess(aManagerProcess)
+    ManagerGame(ManagerProcess &aManagerProcess) : mManagerProcess(aManagerProcess)
     {
     }
 
-    bool InitAddress()
+    void Initialize() override
     {
         this->Address.ClientDLL = mManagerProcess.GetModuleClient().mBase;
 
@@ -35,8 +35,6 @@ class CGame
         this->Address.LocalController = GetClientDLLAddress() + Offsets::dwLocalPlayerController;
         this->Address.LocalPawn = GetClientDLLAddress() + Offsets::dwLocalPlayerPawn;
         this->Address.ForceJump = GetClientDLLAddress() + Offsets::dwForceJump;
-
-        return this->Address.ClientDLL != 0;
     }
 
     DWORD64 GetClientDLLAddress()

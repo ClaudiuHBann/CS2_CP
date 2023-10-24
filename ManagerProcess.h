@@ -1,8 +1,9 @@
 #pragma once
 
+#include "IManager.h"
 #include "ManagerSignatures.h"
 
-class ManagerProcess
+class ManagerProcess : public IManager
 {
   public:
     struct Module
@@ -51,21 +52,14 @@ class ManagerProcess
         mPID = {};
     }
 
-    template <typename ReadType> bool ReadMemory(uintptr_t Address, ReadType &Value, int Size)
+    bool ReadMemoryBuffer(uintptr_t aAddress, unsigned char *aBuffer, size_t aSize)
     {
-        return ReadProcessMemory(mProcess, reinterpret_cast<LPCVOID>(Address), &Value, Size, 0);
+        return ReadProcessMemory(mProcess, reinterpret_cast<LPCVOID>(aAddress), aBuffer, aSize, nullptr);
     }
 
     template <typename ReadType> bool ReadMemory(uintptr_t Address, ReadType &Value)
     {
         if (ReadProcessMemory(mProcess, reinterpret_cast<LPCVOID>(Address), &Value, sizeof(ReadType), 0))
-            return true;
-        return false;
-    }
-
-    template <typename ReadType> bool WriteMemory(uintptr_t Address, ReadType &Value, int Size)
-    {
-        if (WriteProcessMemory(mProcess, reinterpret_cast<LPCVOID>(Address), &Value, Size, 0))
             return true;
         return false;
     }
@@ -85,6 +79,12 @@ class ManagerProcess
     [[nodiscard]] constexpr HANDLE GetProcess() const noexcept
     {
         return mProcess;
+    }
+
+  protected:
+    void Initialize() override
+    {
+        Attach(L"cs2.exe");
     }
 
   private:

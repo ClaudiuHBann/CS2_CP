@@ -1,23 +1,26 @@
 #pragma once
 
+#include "IManager.h"
 #include "ManagerProcess.h"
 #include "Offsets.h"
 #include "Signatures.h"
 
-class ManagerOffsets
+class ManagerOffsets : public IManager
 {
     ManagerProcess &mManagerProcess;
+    ManagerSignatures &mManagerSignatures;
 
   public:
-    ManagerOffsets(ManagerProcess &aManagerProcess) : mManagerProcess(aManagerProcess)
+    ManagerOffsets(ManagerProcess &aManagerProcess, ManagerSignatures &aManagerSignatures)
+        : mManagerProcess(aManagerProcess), mManagerSignatures(aManagerSignatures)
     {
     }
 
     [[nodiscard]] inline std::uintptr_t SearchSignature(const std::string &aSignature,
                                                         const ManagerProcess::Module &aModule)
     {
-        const auto addresses = SearchMemory(mManagerProcess, mManagerProcess.GetProcess(), aSignature, aModule.mBase,
-                                            aModule.mBase + aModule.mSize);
+        const auto addresses =
+            mManagerSignatures.SearchMemory(aSignature, aModule.mBase, aModule.mBase + aModule.mSize);
         if (addresses.empty())
         {
             return {};
@@ -32,7 +35,7 @@ class ManagerOffsets
         return addresses.front() + offset + 7;
     }
 
-    [[nodiscard]] inline void Initialize()
+    [[nodiscard]] inline void Initialize() override
     {
         const auto &moduleClientDLL = mManagerProcess.GetModuleClient();
         if (!moduleClientDLL.mBase)
