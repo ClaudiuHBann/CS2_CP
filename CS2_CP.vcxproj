@@ -165,7 +165,7 @@
     <ClCompile Include="PlayerController.cpp" />
     <ClCompile Include="PlayerPawn.cpp" />
     <ClCompile Include="Signatures.cpp" />
-    <ClCompile Include="Vector.cpp" />
+    <ClCompile Include="Types.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entity.h" />
@@ -180,7 +180,7 @@
     <ClInclude Include="PlayerController.h" />
     <ClInclude Include="PlayerPawn.h" />
     <ClInclude Include="Signatures.h" />
-    <ClInclude Include="Vector.h" />
+    <ClInclude Include="Types.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

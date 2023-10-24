@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ManagerOffsets.h"
-#include "Vector.h"
 
 class PlayerPawn
 {
@@ -15,7 +14,6 @@ class PlayerPawn
     DWORD64 Address = 0;
     Vector2f ViewAngle;
     Vector2f ScreenPos;
-    std::string WeaponName;
     DWORD64 ShotsFired;
     Vector2f AimPunchAngle;
     int Health;

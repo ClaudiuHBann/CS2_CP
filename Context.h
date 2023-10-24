@@ -8,7 +8,7 @@
 
 class Context
 {
-    std::tuple<ManagerProcess *, ManagerOffsets *, ManagerGame *> mManagers{};
+    std::tuple<ManagerProcess *, ManagerSignatures *, ManagerOffsets *, ManagerGame *> mManagers{};
 
     [[nodiscard]] constexpr decltype(auto) GetManagerProcess() noexcept
     {
@@ -29,10 +29,11 @@ class Context
     Context()
     {
         auto managerProcess = new ManagerProcess;
-        auto managerOffsets = new ManagerOffsets(*managerProcess);
+        auto managerSignatures = new ManagerSignatures(*managerProcess);
+        auto managerOffsets = new ManagerOffsets(*managerProcess, *managerSignatures);
         auto managerGame = new ManagerGame(*managerProcess);
 
-        mManagers = {managerProcess, managerOffsets, managerGame};
+        mManagers = {managerProcess, managerSignatures, managerOffsets, managerGame};
 
         Initialize();
     }

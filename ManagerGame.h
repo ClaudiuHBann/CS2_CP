@@ -2,23 +2,17 @@
 
 #include "ManagerProcess.h"
 #include "Offsets.h"
-#include "Vector.h"
 
 class ManagerGame : public IManager
 {
   private:
-    struct
-    {
-        DWORD64 ClientDLL;
-        DWORD64 EntityList;
-        DWORD64 Matrix;
-        DWORD64 ViewAngle;
-        DWORD64 EntityListEntry;
-        DWORD64 LocalController;
-        DWORD64 LocalPawn;
-        DWORD64 ForceJump;
-        DWORD64 GlobalVars;
-    } Address;
+    DWORD64 ForceJump;
+
+    DWORD64 EntityList;
+    DWORD64 EntityListEntry;
+
+    DWORD64 LocalPawn;
+    DWORD64 LocalController;
 
     ManagerProcess &mManagerProcess;
 
@@ -29,80 +23,47 @@ class ManagerGame : public IManager
 
     void Initialize() override
     {
-        this->Address.ClientDLL = mManagerProcess.GetModuleClient().mBase;
+        auto moduleClient = mManagerProcess.GetModuleClient().mBase;
 
-        this->Address.EntityList = GetClientDLLAddress() + Offsets::dwEntityList;
-        this->Address.LocalController = GetClientDLLAddress() + Offsets::dwLocalPlayerController;
-        this->Address.LocalPawn = GetClientDLLAddress() + Offsets::dwLocalPlayerPawn;
-        this->Address.ForceJump = GetClientDLLAddress() + Offsets::dwForceJump;
-    }
-
-    DWORD64 GetClientDLLAddress()
-    {
-        return this->Address.ClientDLL;
+        EntityList = moduleClient + Offsets::dwEntityList;
+        LocalController = moduleClient + Offsets::dwLocalPlayerController;
+        LocalPawn = moduleClient + Offsets::dwLocalPlayerPawn;
+        ForceJump = moduleClient + Offsets::dwForceJump;
     }
 
     DWORD64 GetEntityListAddress()
     {
-        return this->Address.EntityList;
-    }
-
-    DWORD64 GetMatrixAddress()
-    {
-        return this->Address.Matrix;
-    }
-
-    DWORD64 GetViewAngleAddress()
-    {
-        return this->Address.ViewAngle;
+        return this->EntityList;
     }
 
     DWORD64 GetEntityListEntry()
     {
-        return this->Address.EntityListEntry;
+        return this->EntityListEntry;
     }
 
     DWORD64 GetLocalControllerAddress()
     {
-        return this->Address.LocalController;
-    }
-
-    DWORD64 GetLocalPawnAddress()
-    {
-        return this->Address.LocalPawn;
-    }
-
-    DWORD64 GetGlobalVarsAddress()
-    {
-        return this->Address.GlobalVars;
+        return this->LocalController;
     }
 
     bool UpdateEntityListEntry()
     {
-        DWORD64 EntityListEntry = 0;
         if (!mManagerProcess.ReadMemory<DWORD64>(GetEntityListAddress(), EntityListEntry))
             return false;
         if (!mManagerProcess.ReadMemory<DWORD64>(EntityListEntry + 0x10, EntityListEntry))
             return false;
 
-        this->Address.EntityListEntry = EntityListEntry;
-
-        return this->Address.EntityListEntry != 0;
+        return this->EntityListEntry != 0;
     }
 
-    bool SetViewAngle(float Yaw, float Pitch)
+    DWORD64 GetLocalPawnAddress()
     {
-        Vector2f Angle{Pitch, Yaw};
-
-        if (!mManagerProcess.WriteMemory<Vector2f>(this->Address.ViewAngle, Angle))
-            return false;
-
-        return true;
+        return this->LocalPawn;
     }
 
     bool SetForceJump(int value)
     {
-        if (!mManagerProcess.WriteMemory<int>(this->Address.ForceJump, value))
+        if (!mManagerProcess.WriteMemory<int>(this->ForceJump, value))
             return false;
 
         return true;

@@ -5,5 +5,7 @@ class IManager
     friend class Context;
 
   protected:
-    virtual void Initialize() = 0;
+    virtual constexpr void Initialize()
+    {
+    }
 };

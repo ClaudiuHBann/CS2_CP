@@ -1,13 +1,14 @@
 #pragma once
 
-// https://www.unknowncheats.me/forum/counter-strike-2-a/576077-counter-strike-2-reversal-structs-offsets-99.html
 namespace Offsets
 {
 // offsets that will be found by signatures
-static std::ptrdiff_t dwEntityList{};
-static std::ptrdiff_t dwLocalPlayerController{};
-static std::ptrdiff_t dwLocalPlayerPawn{};
 static std::ptrdiff_t dwForceJump{};
+
+static std::ptrdiff_t dwEntityList{};
+
+static std::ptrdiff_t dwLocalPlayerPawn{};
+static std::ptrdiff_t dwLocalPlayerController{};
 
 constexpr std::ptrdiff_t hPlayerPawn = 0x7BC;
 

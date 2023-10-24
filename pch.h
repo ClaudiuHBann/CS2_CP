@@ -1,5 +1,7 @@
 #pragma once
 
+// https://www.unknowncheats.me/forum/counter-strike-2-a/576077-counter-strike-2-reversal-structs-offsets-99.html
+
 // win32
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
@@ -10,6 +12,9 @@
 #include <functional>
 #include <string>
 #include <vector>
+
+// hbann
+#include "Types.h"
 
 /*
     TODO:

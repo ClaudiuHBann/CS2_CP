@@ -12,7 +12,6 @@ class PlayerController
     int Health = 0;
     int AliveStatus = 0;
     DWORD64 Pawn = 0;
-    std::string PlayerName;
 
     ManagerProcess &mManagerProcess;
     ManagerGame &mManagerGame;

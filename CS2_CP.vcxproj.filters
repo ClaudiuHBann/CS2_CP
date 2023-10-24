@@ -18,7 +18,7 @@
     <ClCompile Include="PlayerPawn.cpp">
       <Filter>Entity</Filter>
     </ClCompile>
-    <ClCompile Include="Vector.cpp">
+    <ClCompile Include="Types.cpp">
       <Filter>Utility</Filter>
     </ClCompile>
     <ClCompile Include="Entity.cpp">
@@ -55,7 +55,7 @@
     <ClInclude Include="PlayerController.h">
       <Filter>Entity</Filter>
     </ClInclude>
-    <ClInclude Include="Vector.h">
+    <ClInclude Include="Types.h">
       <Filter>Utility</Filter>
     </ClInclude>
     <ClInclude Include="Entity.h">

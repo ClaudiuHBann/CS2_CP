@@ -6,12 +6,6 @@
 class ManagerProcess : public IManager
 {
   public:
-    struct Module
-    {
-        uintptr_t mBase{};
-        size_t mSize{};
-    };
-
     inline ~ManagerProcess() noexcept
     {
         Detach();

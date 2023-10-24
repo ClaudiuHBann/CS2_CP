@@ -1,51 +1,70 @@
 #include "pch.h"
 #include "ManagerSignatures.h"
+#include "ManagerProcess.h"
 
-std::uintptr_t SearchMemory(const char *signature, void *module, size_t size)
+/* [[nodiscard]] static */ std::vector<std::int16_t> ManagerSignatures::SignatureToBytes(
+    std::wstring aSignature) noexcept
 {
-    static auto pattern_to_byte = [](const char *pattern) {
-        auto bytes = std::vector<int>{};
-        auto start = const_cast<char *>(pattern);
-        auto end = const_cast<char *>(pattern) + strlen(pattern);
+    std::vector<std::int16_t> bytes{};
 
-        for (auto current = start; current < end; ++current)
+    for (auto current = aSignature.data(); current < aSignature.data() + aSignature.size(); ++current)
+    {
+        std::int16_t byte{};
+        if (*current == '?')
         {
-            if (*current == '?')
+            if (*++current == '?')
             {
-                ++current;
-                if (*current == '?')
-                    ++current;
-                bytes.push_back(-1);
+                current++;
             }
-            else
-            {
-                bytes.push_back(strtoul(current, &current, 16));
-            }
+
+            byte = -1;
         }
-        return bytes;
-    };
+        else
+        {
+            byte = static_cast<std::int16_t>(wcstoul(current, &current, 16));
+        }
 
-    auto patternBytes = pattern_to_byte(signature);
-    auto scanBytes = reinterpret_cast<std::uint8_t *>(module);
+        bytes.push_back(byte);
+    }
 
-    auto s = patternBytes.size();
-    auto d = patternBytes.data();
+    return bytes;
+}
 
-    for (auto i = 0ul; i < size - s; ++i)
+/* [[nodiscard]] static */ std::ptrdiff_t ManagerSignatures::FindOffset(const std::vector<std::uint8_t> &aData,
+                                                                        const std::wstring &aSignature) noexcept
+{
+    auto signatureAsBytes = SignatureToBytes(aSignature);
+    for (std::size_t i = 0; i < aData.size() - signatureAsBytes.size(); i++)
     {
         bool found = true;
-        for (auto j = 0ul; j < s; ++j)
+        for (std::size_t j = 0; j < signatureAsBytes.size(); j++)
         {
-            if (scanBytes[i + j] != d[j] && d[j] != -1)
+            if (aData[i + j] != signatureAsBytes[j] && signatureAsBytes[j] != -1)
             {
                 found = false;
                 break;
             }
         }
+
         if (found)
         {
             return i;
         }
     }
+
     return {};
+}
+
+/* [[nodiscard]] */ std::uintptr_t ManagerSignatures::FindSignature(const std::vector<std::uint8_t> &aData,
+                                                                    const Module &aModule,
+                                                                    const Signature &aSignature) noexcept
+{
+    auto address = aModule.mBase + FindOffset(aData, aSignature.mPattern);
+
+    // TODO: is this shit for client.dll only?
+    uint32_t offset{};
+    mManagerProcess.ReadMemory(address + 3, offset);
+    address += offset + 7;
+
+    return address - aModule.mBase + aSignature.mOffset;
 }
