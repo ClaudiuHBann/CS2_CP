@@ -7,58 +7,42 @@
 class ManagerOffsets
 {
   public:
-    static std::uintptr_t SearchSignature(const std::string &aSignature, const std::uintptr_t &aBase,
-                                          const std::size_t aSize)
+    [[nodiscard]] static inline std::uintptr_t SearchSignature(const std::string &aSignature,
+                                                               const ProcessManager::Module &aModule)
     {
-        std::vector<std::uintptr_t> TempAddressList;
-        std::uintptr_t Address = 0;
-        DWORD Offsets = 0;
+        const auto addresses = ProcessManager::SearchMemory(aSignature, aModule.mBase, aModule.mBase + aModule.mSize);
+        if (addresses.empty())
+        {
+            return {};
+        }
 
-        TempAddressList = ProcessManager::SearchMemory(aSignature, aBase, aBase + aSize);
+        uint32_t offset{};
+        if (!ProcessManager::ReadMemory(addresses.front() + 3, offset))
+        {
+            return {};
+        }
 
-        if (TempAddressList.size() <= 0)
-            return 0;
-
-        if (!ProcessManager::ReadMemory<DWORD>(TempAddressList.at(0) + 3, Offsets))
-            return 0;
-
-        Address = TempAddressList.at(0) + Offsets + 7;
-        return Address;
+        return addresses.front() + offset + 7;
     }
 
-    static inline bool UpdateOffsets()
+    [[nodiscard]] static inline void Initialize()
     {
-        size_t size{};
-        std::uintptr_t ClientDLL =
-            reinterpret_cast<std::uintptr_t>(ProcessManager::GetProcessModuleHandle("client.dll", size));
-        if (ClientDLL == 0)
-            return false;
+        const auto moduleClientDLL = ProcessManager::GetProcessModuleHandle("client.dll");
+        if (!moduleClientDLL.mBase)
+        {
+            return;
+        }
 
-        std::ptrdiff_t TempAddress = 0;
+        auto address = SearchSignature(Signatures::EntityList, moduleClientDLL);
+        Offsets::dwEntityList = address - moduleClientDLL.mBase;
 
-        TempAddress = SearchSignature(Signatures::EntityList, ClientDLL, size);
-        if (TempAddress == 0)
-            return false;
+        address = SearchSignature(Signatures::LocalPlayerController, moduleClientDLL);
+        Offsets::dwLocalPlayerController = address - moduleClientDLL.mBase;
 
-        Offsets::dwEntityList = TempAddress - ClientDLL;
+        address = SearchSignature(Signatures::LocalPlayerPawn, moduleClientDLL);
+        Offsets::dwLocalPlayerPawn = address + 0x118 - moduleClientDLL.mBase;
 
-        TempAddress = SearchSignature(Signatures::LocalPlayerController, ClientDLL, size);
-        if (TempAddress == 0)
-            return false;
-
-        Offsets::dwLocalPlayerController = TempAddress - ClientDLL;
-
-        TempAddress = SearchSignature(Signatures::LocalPlayerPawn, ClientDLL, size);
-        if (TempAddress == 0)
-            return false;
-
-        Offsets::dwLocalPlayerPawn = TempAddress + 0x118 - ClientDLL;
-
-        TempAddress = SearchSignature(Signatures::ForceJump, ClientDLL, size);
-        if (TempAddress == 0)
-            return false;
-
-        Offsets::dwForceJump = TempAddress + 0x30 - ClientDLL;
-        return true;
+        address = SearchSignature(Signatures::ForceJump, moduleClientDLL);
+        Offsets::dwForceJump = address + 0x30 - moduleClientDLL.mBase;
     }
 };

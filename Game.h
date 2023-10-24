@@ -23,8 +23,7 @@ class CGame
   public:
     bool InitAddress()
     {
-        size_t size;
-        this->Address.ClientDLL = reinterpret_cast<DWORD64>(ProcessManager::GetProcessModuleHandle("client.dll", size));
+        this->Address.ClientDLL = ProcessManager::GetProcessModuleHandle("client.dll").mBase;
 
         this->Address.EntityList = GetClientDLLAddress() + Offsets::dwEntityList;
         this->Address.LocalController = GetClientDLLAddress() + Offsets::dwLocalPlayerController;

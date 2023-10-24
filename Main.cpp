@@ -7,7 +7,7 @@
 int main()
 {
     ProcessManager::Attach("cs2.exe");
-    ManagerOffsets::UpdateOffsets();
+    ManagerOffsets::Initialize();
     gGame.InitAddress();
 
     while (true)
