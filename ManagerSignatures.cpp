@@ -57,7 +57,7 @@
 
 /* [[nodiscard]] */ std::uintptr_t ManagerSignatures::FindSignature(const std::vector<std::uint8_t> &aData,
                                                                     const Module &aModule,
-                                                                    const Signature &aSignature) noexcept
+                                                                    const Signature &aSignature) const noexcept
 {
     auto address = aModule.mBase + FindOffset(aData, aSignature.mPattern);
 
@@ -67,4 +67,21 @@
     address += offset + 7;
 
     return address - aModule.mBase + aSignature.mOffset;
+}
+
+void ManagerSignatures::FindSignatures(const Module &aModule, const std::vector<std::ptrdiff_t *> &aOffsets,
+                                       const std::vector<Signature> &aSignatures) const noexcept
+{
+    if (aOffsets.size() != aSignatures.size())
+    {
+        return;
+    }
+
+    std::vector<std::uint8_t> data(aModule.mSize);
+    mManagerProcess.ReadMemory(aModule.mBase, *data.data(), data.size());
+
+    for (size_t i = 0; i < aSignatures.size(); i++)
+    {
+        *aOffsets[i] = FindSignature(data, aModule, aSignatures[i]);
+    }
 }

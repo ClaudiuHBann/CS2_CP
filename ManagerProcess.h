@@ -1,68 +1,25 @@
 #pragma once
 
 #include "IManager.h"
-#include "ManagerSignatures.h"
 
 class ManagerProcess : public IManager
 {
   public:
-    inline ~ManagerProcess() noexcept
+    ~ManagerProcess() noexcept;
+
+    bool Attach(const std::wstring &aProcessName) noexcept;
+    void Detach() noexcept;
+
+    template <typename Type>
+    inline bool ReadMemory(const std::uintptr_t aAddress, Type &aData, const size_t aSize = sizeof(Type))
     {
-        Detach();
+        return ReadProcessMemory(mProcess, reinterpret_cast<LPCVOID>(aAddress), &aData, aSize, 0);
     }
 
-    inline bool Attach(const std::wstring &aProcessName) noexcept
+    template <typename Type>
+    inline bool WriteMemory(const std::uintptr_t aAddress, const Type &aData, const size_t aSize = sizeof(Type))
     {
-        mPID = GetProcessID(aProcessName);
-        if (!mPID)
-        {
-            return false;
-        }
-
-        mProcess = OpenProcess(PROCESS_ALL_ACCESS, TRUE, mPID);
-        if (!mProcess)
-        {
-            return false;
-        }
-
-        mModuleClient = GetProcessModule(mPID, L"client.dll");
-        if (!mModuleClient.mBase || !mModuleClient.mSize)
-        {
-            return false;
-        }
-
-        return mAttached = true;
-    }
-
-    inline void Detach() noexcept
-    {
-        if (mProcess)
-        {
-            CloseHandle(mProcess);
-        }
-        mProcess = {};
-
-        mAttached = {};
-        mPID = {};
-    }
-
-    bool ReadMemoryBuffer(uintptr_t aAddress, unsigned char *aBuffer, size_t aSize)
-    {
-        return ReadProcessMemory(mProcess, reinterpret_cast<LPCVOID>(aAddress), aBuffer, aSize, nullptr);
-    }
-
-    template <typename ReadType> bool ReadMemory(uintptr_t Address, ReadType &Value)
-    {
-        if (ReadProcessMemory(mProcess, reinterpret_cast<LPCVOID>(Address), &Value, sizeof(ReadType), 0))
-            return true;
-        return false;
-    }
-
-    template <typename ReadType> bool WriteMemory(uintptr_t Address, ReadType &Value)
-    {
-        if (WriteProcessMemory(mProcess, reinterpret_cast<LPVOID>(Address), &Value, sizeof(ReadType), 0))
-            return true;
-        return false;
+        return WriteProcessMemory(mProcess, reinterpret_cast<LPVOID>(aAddress), &aData, aSize, 0);
     }
 
     [[nodiscard]] constexpr const Module &GetModuleClient() const noexcept
@@ -76,10 +33,7 @@ class ManagerProcess : public IManager
     }
 
   protected:
-    void Initialize() override
-    {
-        Attach(L"cs2.exe");
-    }
+    void Initialize() override;
 
   private:
     HANDLE mProcess{};
@@ -89,41 +43,6 @@ class ManagerProcess : public IManager
 
     bool mAttached{};
 
-    [[nodiscard]] static uint32_t GetProcessID(const std::wstring &aProcessName) noexcept
-    {
-        PROCESSENTRY32W entry{.dwSize = sizeof(entry)};
-
-        const auto ss = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-        Process32FirstW(ss, &entry);
-        do
-        {
-            if (!aProcessName.compare(entry.szExeFile))
-            {
-                CloseHandle(ss);
-                return entry.th32ProcessID;
-            }
-        } while (Process32NextW(ss, &entry));
-
-        CloseHandle(ss);
-        return {};
-    }
-
-    [[nodiscard]] static Module GetProcessModule(const uint32_t aPID, const std::wstring &aModuleName) noexcept
-    {
-        MODULEENTRY32W entry{.dwSize = sizeof(entry)};
-
-        const auto ss = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, aPID);
-        Module32FirstW(ss, &entry);
-        do
-        {
-            if (!aModuleName.compare(entry.szModule))
-            {
-                CloseHandle(ss);
-                return {reinterpret_cast<uintptr_t>(entry.hModule), entry.modBaseSize};
-            }
-        } while (Module32NextW(ss, &entry));
-
-        CloseHandle(ss);
-        return {};
-    }
+    [[nodiscard]] static uint32_t GetProcessID(const std::wstring &aProcessName) noexcept;
+    [[nodiscard]] static Module GetProcessModule(const uint32_t aPID, const std::wstring &aModuleName) noexcept;
 };
