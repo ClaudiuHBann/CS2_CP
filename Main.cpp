@@ -3,5 +3,6 @@
 
 int main()
 {
-    return Context().Run();
+    Context().Run();
+    return 0;
 }

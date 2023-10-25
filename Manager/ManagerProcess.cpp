@@ -77,7 +77,7 @@ void ManagerProcess::Initialize()
         if (!aModuleName.compare(entry.szModule))
         {
             CloseHandle(ss);
-            return {reinterpret_cast<uintptr_t>(entry.hModule), entry.modBaseSize};
+            return {reinterpret_cast<std::uintptr_t>(entry.hModule), entry.modBaseSize};
         }
     } while (Module32NextW(ss, &entry));
 

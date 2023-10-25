@@ -62,10 +62,7 @@
     auto address = aModule.mBase + FindOffset(aData, aSignature.mPattern);
 
     // TODO: is this shit for client.dll only?
-    uint32_t offset{};
-    mManagerProcess.ReadMemory(address + 3, offset);
-    address += offset + 7;
-
+    address += mManagerProcess.ReadMemory<uint32_t>(address + 3) + 7;
     return address - aModule.mBase + aSignature.mOffset;
 }
 
@@ -80,7 +77,7 @@ void ManagerSignatures::FindSignatures(const Module &aModule, const std::vector<
     std::vector<std::uint8_t> data(aModule.mSize);
     mManagerProcess.ReadMemory(aModule.mBase, *data.data(), data.size());
 
-    for (size_t i = 0; i < aSignatures.size(); i++)
+    for (std::size_t i = 0; i < aSignatures.size(); i++)
     {
         *aOffsets[i] = FindSignature(data, aModule, aSignatures[i]);
     }

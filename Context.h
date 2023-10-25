@@ -29,7 +29,7 @@ class Context
     Context();
     ~Context();
 
-    int Run()
+    void Run()
     {
         while (true)
         {
@@ -40,8 +40,6 @@ class Context
             float duration{};
             GetManagerProcess().WriteMemory(entityLocal.GetPawn().Base() + Offsets::Entity::flFlashDuration, duration);
         }
-
-        return 0;
     }
 
   private:

@@ -13,8 +13,8 @@ class Vector2f
 
 struct Module
 {
-    uintptr_t mBase{};
-    size_t mSize{};
+    std::uintptr_t mBase{};
+    std::size_t mSize{};
 };
 
 struct Signature
