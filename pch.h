@@ -69,5 +69,6 @@
 /*
     TODO:
          - add tracing
+         - add namespaces
          - IScript base class with pure virtual func Run with ScriptAntiFlashbang and a ManagerScripts
 */

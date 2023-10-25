@@ -7,18 +7,10 @@ Context::Context()
     auto managerSignatures = new ManagerSignatures(*managerProcess);
     auto managerOffsets = new ManagerOffsets(*managerProcess, *managerSignatures);
     auto managerGame = new ManagerGame(*managerProcess);
+    mEntityLocal = new EntityLocal(*managerProcess, *managerGame);
+    auto managerScripts = new ManagerScripts(*managerProcess, *mEntityLocal);
 
-    mManagers = {managerProcess, managerSignatures, managerOffsets, managerGame};
+    mManagers = {managerProcess, managerSignatures, managerOffsets, managerGame, managerScripts};
 
     Initialize();
-}
-
-Context ::~Context()
-{
-    std::apply([](auto &&...aArgs) { (delete aArgs, ...); }, mManagers);
-}
-
-void Context::Initialize()
-{
-    std::apply([](auto &&...aArgs) { (static_cast<IManager *>(aArgs)->Initialize(), ...); }, mManagers);
 }

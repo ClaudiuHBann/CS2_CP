@@ -1,47 +1,41 @@
 #pragma once
 
-#include "Entity/Entity.h"
-#include "Manager/ManagerGame.h"
+#include "Entity/EntityLocal.h"
 #include "Manager/ManagerOffsets.h"
-#include "Manager/ManagerProcess.h"
+#include "Manager/ManagerScripts.h"
 #include "Manager/ManagerSignatures.h"
 
 class Context
 {
-    std::tuple<ManagerProcess *, ManagerSignatures *, ManagerOffsets *, ManagerGame *> mManagers{};
+    std::tuple<ManagerProcess *, ManagerSignatures *, ManagerOffsets *, ManagerGame *, ManagerScripts *> mManagers{};
 
-    [[nodiscard]] constexpr decltype(auto) GetManagerProcess() noexcept
+    [[nodiscard]] constexpr decltype(auto) GetManagerScripts() noexcept
     {
-        return *std::get<ManagerProcess *>(mManagers);
-    }
-
-    [[nodiscard]] constexpr decltype(auto) GetManagerOffsets() noexcept
-    {
-        return *std::get<ManagerOffsets *>(mManagers);
-    }
-
-    [[nodiscard]] constexpr decltype(auto) GetManagerGame() noexcept
-    {
-        return *std::get<ManagerGame *>(mManagers);
+        return *std::get<ManagerScripts *>(mManagers);
     }
 
   public:
     Context();
-    ~Context();
+
+    constexpr ~Context()
+    {
+        std::apply([](auto &&...aArgs) { (delete aArgs, ...); }, mManagers);
+    }
 
     void Run()
     {
         while (true)
         {
-            Entity entityLocal(GetManagerProcess(), GetManagerGame());
-            entityLocal.UpdateController(GetManagerGame().GetLocalController());
-            entityLocal.UpdatePawn(GetManagerGame().GetLocalPawn());
-
-            float duration{};
-            GetManagerProcess().WriteMemory(entityLocal.GetPawn().Base() + Offsets::Entity::flFlashDuration, duration);
+            mEntityLocal->Update();
+            GetManagerScripts().Update();
         }
     }
 
   private:
-    void Initialize();
+    EntityLocal *mEntityLocal{};
+
+    constexpr void Initialize()
+    {
+        std::apply([](auto &&...aArgs) { (static_cast<IManager *>(aArgs)->Initialize(), ...); }, mManagers);
+    }
 };

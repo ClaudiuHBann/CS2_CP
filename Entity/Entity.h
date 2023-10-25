@@ -5,20 +5,9 @@
 class Entity
 {
   public:
-    Entity(ManagerProcess &aManagerProcess, ManagerGame &aManagerGame)
+    constexpr Entity(ManagerProcess &aManagerProcess, ManagerGame &aManagerGame) noexcept
         : mPawn(aManagerProcess), mController(aManagerProcess, aManagerGame, mPawn)
     {
-    }
-
-    inline void UpdateController(const std::uintptr_t aBase)
-    {
-        if (!aBase)
-        {
-            return;
-        }
-
-        mController.Base(aBase);
-        mPawn.Base(mController.FindPawnAddress());
     }
 
     inline void UpdatePawn(const std::uintptr_t aBase)

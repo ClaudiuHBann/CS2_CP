@@ -151,7 +151,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Entity\EntityLocal.cpp" />
     <ClCompile Include="Entity\Entity.cpp" />
+    <ClCompile Include="Manager\ManagerScripts.cpp" />
+    <ClCompile Include="Script\ScriptAntiFB.cpp" />
+    <ClCompile Include="Script\IScript.cpp" />
     <ClCompile Include="Manager\ManagerGame.cpp" />
     <ClCompile Include="Manager\IManager.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -172,7 +176,11 @@
     <ClCompile Include="Utility\Types.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Entity\EntityLocal.h" />
     <ClInclude Include="Entity\Entity.h" />
+    <ClInclude Include="Manager\ManagerScripts.h" />
+    <ClInclude Include="Script\ScriptAntiFB.h" />
+    <ClInclude Include="Script\IScript.h" />
     <ClInclude Include="Manager\ManagerGame.h" />
     <ClInclude Include="Manager\IManager.h" />
     <ClInclude Include="Manager\ManagerOffsets.h" />
