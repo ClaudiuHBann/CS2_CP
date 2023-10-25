@@ -1,71 +1,50 @@
 #pragma once
 
-#include "ManagerProcess.h"
-#include "Offsets.h"
+#include "IManager.h"
+
+class ManagerProcess;
 
 class ManagerGame : public IManager
 {
+  public:
+    constexpr ManagerGame(ManagerProcess &aManagerProcess) noexcept : mManagerProcess(aManagerProcess)
+    {
+    }
+
+    void Initialize() override;
+
+    [[nodiscard]] constexpr auto GetForceJumpAddress() const noexcept
+    {
+        return mForceJump;
+    }
+
+    bool SetForceJump(const int aValue) const;
+
+    [[nodiscard]] constexpr auto GetEntityListAddress() const noexcept
+    {
+        return mEntityList;
+    }
+
+    [[nodiscard]] std::uintptr_t GetEntityListEntryAddress();
+
+    [[nodiscard]] constexpr auto GetLocalPawnAddress() const noexcept
+    {
+        return mLocalPawn;
+    }
+
+    [[nodiscard]] constexpr auto GetLocalControllerAddress() const noexcept
+    {
+        return mLocalController;
+    }
+
   private:
-    DWORD64 ForceJump;
-
-    DWORD64 EntityList;
-    DWORD64 EntityListEntry;
-
-    DWORD64 LocalPawn;
-    DWORD64 LocalController;
-
     ManagerProcess &mManagerProcess;
 
-  public:
-    ManagerGame(ManagerProcess &aManagerProcess) : mManagerProcess(aManagerProcess)
-    {
-    }
+    std::uintptr_t mForceJump{};
 
-    void Initialize() override
-    {
-        auto moduleClient = mManagerProcess.GetModuleClient().mBase;
+    std::uintptr_t mEntityList{};
+    std::uintptr_t mEntityListEntry{};
 
-        EntityList = moduleClient + Offsets::dwEntityList;
-        LocalController = moduleClient + Offsets::dwLocalPlayerController;
-        LocalPawn = moduleClient + Offsets::dwLocalPlayerPawn;
-        ForceJump = moduleClient + Offsets::dwForceJump;
-    }
-
-    DWORD64 GetEntityListAddress()
-    {
-        return this->EntityList;
-    }
-
-    DWORD64 GetEntityListEntry()
-    {
-        return this->EntityListEntry;
-    }
-
-    DWORD64 GetLocalControllerAddress()
-    {
-        return this->LocalController;
-    }
-
-    bool UpdateEntityListEntry()
-    {
-        if (!mManagerProcess.ReadMemory<DWORD64>(GetEntityListAddress(), EntityListEntry))
-            return false;
-        if (!mManagerProcess.ReadMemory<DWORD64>(EntityListEntry + 0x10, EntityListEntry))
-            return false;
-
-        return this->EntityListEntry != 0;
-    }
-
-    DWORD64 GetLocalPawnAddress()
-    {
-        return this->LocalPawn;
-    }
-
-    bool SetForceJump(int value)
-    {
-        if (!mManagerProcess.WriteMemory<int>(this->ForceJump, value))
-            return false;
-
-        return true;
-    }
+    std::uintptr_t mLocalPawn{};
+    std::uintptr_t mLocalController{};
 };

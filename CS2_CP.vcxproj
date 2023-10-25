@@ -162,8 +162,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="PlayerController.cpp" />
-    <ClCompile Include="PlayerPawn.cpp" />
+    <ClCompile Include="Controller.cpp" />
+    <ClCompile Include="Pawn.cpp" />
     <ClCompile Include="Signatures.cpp" />
     <ClCompile Include="Types.cpp" />
   </ItemGroup>
@@ -177,8 +177,8 @@
     <ClInclude Include="ManagerSignatures.h" />
     <ClInclude Include="Offsets.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="PlayerController.h" />
-    <ClInclude Include="PlayerPawn.h" />
+    <ClInclude Include="Controller.h" />
+    <ClInclude Include="Pawn.h" />
     <ClInclude Include="Signatures.h" />
     <ClInclude Include="Types.h" />
   </ItemGroup>

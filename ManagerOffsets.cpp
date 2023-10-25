@@ -14,10 +14,10 @@
     }
 
     std::vector<std::ptrdiff_t *> offsets{&Offsets::dwForceJump, &Offsets::dwEntityList,
-                                          &Offsets::dwLocalPlayerController, &Offsets::dwLocalPlayerPawn};
+                                          &Offsets::dwLocalController, &Offsets::dwLocalPawn};
 
     std::vector<Signature> signatures{Signatures::dwForceJump, Signatures::dwEntityList,
-                                      Signatures::dwLocalPlayerController, Signatures::dwLocalPlayerPawn};
+                                      Signatures::dwLocalController, Signatures::dwLocalPawn};
 
     mManagerSignatures.FindSignatures(moduleClientDLL, offsets, signatures);
 }

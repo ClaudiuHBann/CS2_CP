@@ -2,9 +2,10 @@
 
 #include "ManagerGame.h"
 #include "ManagerOffsets.h"
+#include "ManagerProcess.h"
 #include "Offsets.h"
 
-class PlayerController
+class Controller
 {
   public:
     DWORD64 Address = 0;
@@ -16,7 +17,7 @@ class PlayerController
     ManagerProcess &mManagerProcess;
     ManagerGame &mManagerGame;
 
-    PlayerController(ManagerProcess &aManagerProcess, ManagerGame &aManagerGame)
+    Controller(ManagerProcess &aManagerProcess, ManagerGame &aManagerGame)
         : mManagerProcess(aManagerProcess), mManagerGame(aManagerGame)
     {
     }

@@ -1,13 +1,13 @@
 #pragma once
 
-#include "PlayerController.h"
-#include "PlayerPawn.h"
+#include "Controller.h"
+#include "Pawn.h"
 
 class CEntity
 {
   public:
-    PlayerController Controller;
-    PlayerPawn Pawn;
+    Controller Controller;
+    Pawn Pawn;
 
     CEntity(ManagerProcess &aManagerProcess, ManagerGame &aManagerGame)
         : Controller(aManagerProcess, aManagerGame), Pawn(aManagerProcess)
@@ -28,31 +28,23 @@ class CEntity
         if (!this->Controller.GetTeamID())
             return false;
 
-        this->Pawn.Address = this->Controller.GetPlayerPawnAddress();
+        Pawn.Base(Controller.GetPlayerPawnAddress());
 
         return true;
     }
 
-    bool UpdatePawn(const DWORD64 &PlayerPawnAddress)
+    void UpdatePawn(const std::uintptr_t aBase)
     {
-        if (PlayerPawnAddress == 0)
-            return false;
-        this->Pawn.Address = PlayerPawnAddress;
+        if (!aBase)
+        {
+            return;
+        }
 
-        if (!this->Pawn.GetAimPunchAngle())
-            return false;
-        if (!this->Pawn.GetHealth())
-            return false;
-        if (!this->Pawn.GetTeamID())
-            return false;
-        if (!this->Pawn.GetFFlags())
-            return false;
+        Pawn.Base(aBase);
 
-        return true;
-    }
-
-    bool IsAlive()
-    {
-        return this->Controller.AliveStatus == 1 && this->Pawn.Health > 0;
+        Pawn.aimPunchAngle();
+        Pawn.iHealth();
+        Pawn.iTeamNum();
+        Pawn.fFlags();
     }
 };

@@ -3,12 +3,12 @@
 namespace Offsets
 {
 // offsets that will be found by signatures
-static std::ptrdiff_t dwForceJump{};
+inline std::ptrdiff_t dwForceJump{};
 
-static std::ptrdiff_t dwEntityList{};
+inline std::ptrdiff_t dwEntityList{};
 
-static std::ptrdiff_t dwLocalPlayerPawn{};
-static std::ptrdiff_t dwLocalPlayerController{};
+inline std::ptrdiff_t dwLocalPawn{};
+inline std::ptrdiff_t dwLocalController{};
 
 constexpr std::ptrdiff_t hPlayerPawn = 0x7BC;
 

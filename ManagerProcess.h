@@ -10,10 +10,18 @@ class ManagerProcess : public IManager
     bool Attach(const std::wstring &aProcessName) noexcept;
     void Detach() noexcept;
 
+    // TODO: delete this shit
     template <typename Type>
     inline bool ReadMemory(const std::uintptr_t aAddress, Type &aData, const size_t aSize = sizeof(Type))
     {
         return ReadProcessMemory(mProcess, reinterpret_cast<LPCVOID>(aAddress), &aData, aSize, 0);
+    }
+
+    template <typename Type> inline Type ReadMemory(const std::uintptr_t aAddress)
+    {
+        Type data{};
+        ReadMemory(aAddress, data);
+        return data;
     }
 
     template <typename Type>

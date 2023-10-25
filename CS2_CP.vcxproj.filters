@@ -12,10 +12,10 @@
     <ClCompile Include="ManagerSignatures.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerController.cpp">
+    <ClCompile Include="Controller.cpp">
       <Filter>Entity</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerPawn.cpp">
+    <ClCompile Include="Pawn.cpp">
       <Filter>Entity</Filter>
     </ClCompile>
     <ClCompile Include="Types.cpp">
@@ -49,10 +49,10 @@
     <ClInclude Include="ManagerProcess.h">
       <Filter>Manager</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerPawn.h">
+    <ClInclude Include="Pawn.h">
       <Filter>Entity</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerController.h">
+    <ClInclude Include="Controller.h">
       <Filter>Entity</Filter>
     </ClInclude>
     <ClInclude Include="Types.h">

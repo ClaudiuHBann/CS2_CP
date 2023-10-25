@@ -16,6 +16,52 @@
 // hbann
 #include "Types.h"
 
+#define DEFINE_VAR(type, name)                                                                                         \
+  private:                                                                                                             \
+    type m##name{};
+
+#define DEFINE_VAR_GET(parent, offset)                                                                                 \
+  public:                                                                                                              \
+    inline decltype(auto) offset(const bool aUpdate = true)                                                            \
+    {                                                                                                                  \
+        if (aUpdate)                                                                                                   \
+        {                                                                                                              \
+            m##offset = mManagerProcess.ReadMemory<decltype(m##offset)>(Offsets::parent::offset);                      \
+        }                                                                                                              \
+                                                                                                                       \
+        return m##offset;                                                                                              \
+    }
+
+#define DEFINE_VAR_SET(parent, offset)                                                                                 \
+  public:                                                                                                              \
+    inline decltype(auto) offset(const decltype(m##offset) &aValue)                                                    \
+    {                                                                                                                  \
+        m##offset = aValue;                                                                                            \
+        mManagerProcess.WriteMemory(mBase + Offsets::parent::offset, m##offset);                                       \
+        return *this;                                                                                                  \
+    }
+
+#define DEFINE_BASE                                                                                                    \
+  private:                                                                                                             \
+    std::uintptr_t mBase{};                                                                                            \
+                                                                                                                       \
+  public:                                                                                                              \
+    [[nodiscard]] constexpr decltype(auto) Base() const noexcept                                                       \
+    {                                                                                                                  \
+        return mBase;                                                                                                  \
+    }                                                                                                                  \
+                                                                                                                       \
+    constexpr decltype(auto) Base(const decltype(mBase) &aValue) noexcept                                              \
+    {                                                                                                                  \
+        mBase = aValue;                                                                                                \
+        return *this;                                                                                                  \
+    }
+
+#define DEFINE_VAR_GET_SET(type, name, parent)                                                                         \
+    DEFINE_VAR(type, name)                                                                                             \
+    DEFINE_VAR_GET(parent, name)                                                                                       \
+    DEFINE_VAR_SET(parent, name)
+
 /*
     TODO:
          - add tracing
