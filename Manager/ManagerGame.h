@@ -1,8 +1,6 @@
 #pragma once
 
-#include "IManager.h"
-
-class ManagerProcess;
+#include "ManagerProcess.h"
 
 class ManagerGame : public IManager
 {
@@ -20,21 +18,19 @@ class ManagerGame : public IManager
 
     bool SetForceJump(const int aValue) const;
 
-    [[nodiscard]] constexpr auto GetEntityListAddress() const noexcept
+    [[nodiscard]] inline auto GetEntityList() const
     {
-        return mEntityList;
+        return mManagerProcess.ReadMemory<std::uintptr_t>(mEntityList);
     }
 
-    [[nodiscard]] std::uintptr_t GetEntityListEntryAddress();
-
-    [[nodiscard]] constexpr auto GetLocalPawnAddress() const noexcept
+    [[nodiscard]] inline auto GetLocalController() const
     {
-        return mLocalPawn;
+        return mManagerProcess.ReadMemory<std::uintptr_t>(mLocalController);
     }
 
-    [[nodiscard]] constexpr auto GetLocalControllerAddress() const noexcept
+    [[nodiscard]] inline auto GetLocalPawn() const
     {
-        return mLocalController;
+        return mManagerProcess.ReadMemory<std::uintptr_t>(mLocalPawn);
     }
 
   private:
@@ -43,7 +39,6 @@ class ManagerGame : public IManager
     std::uintptr_t mForceJump{};
 
     std::uintptr_t mEntityList{};
-    std::uintptr_t mEntityListEntry{};
 
     std::uintptr_t mLocalPawn{};
     std::uintptr_t mLocalController{};

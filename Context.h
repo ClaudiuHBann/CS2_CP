@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Entity.h"
-#include "ManagerGame.h"
-#include "ManagerOffsets.h"
-#include "ManagerProcess.h"
-#include "ManagerSignatures.h"
+#include "Entity/Entity.h"
+#include "Manager/ManagerGame.h"
+#include "Manager/ManagerOffsets.h"
+#include "Manager/ManagerProcess.h"
+#include "Manager/ManagerSignatures.h"
 
 class Context
 {
@@ -33,19 +33,12 @@ class Context
     {
         while (true)
         {
-            auto LocalControllerAddress =
-                GetManagerProcess().ReadMemory<std::uintptr_t>(GetManagerGame().GetLocalControllerAddress());
-            auto LocalPawnAddress =
-                GetManagerProcess().ReadMemory<std::uintptr_t>(GetManagerGame().GetLocalPawnAddress());
-
-            // LocalEntity
-            CEntity LocalEntity(GetManagerProcess(), GetManagerGame());
-            if (!LocalEntity.UpdateController(LocalControllerAddress))
-                continue;
-            LocalEntity.UpdatePawn(LocalPawnAddress);
+            Entity entityLocal(GetManagerProcess(), GetManagerGame());
+            entityLocal.UpdateController(GetManagerGame().GetLocalController());
+            entityLocal.UpdatePawn(GetManagerGame().GetLocalPawn());
 
             float duration{};
-            GetManagerProcess().WriteMemory(LocalEntity.Pawn.Base() + Offsets::Entity::flFlashDuration, duration);
+            GetManagerProcess().WriteMemory(entityLocal.GetPawn().Base() + Offsets::Entity::flFlashDuration, duration);
         }
 
         return 0;

@@ -14,15 +14,19 @@
 #include <vector>
 
 // hbann
-#include "Types.h"
+#include "Utility/Types.h"
+// lower headers have dependencies on Types.h so:
+#include "Utility/Offsets.h"
+#include "Utility/Signatures.h"
 
+// TODO: refactor these defines? (offsets and signatures too)
 #define DEFINE_VAR(type, name)                                                                                         \
   private:                                                                                                             \
     type m##name{};
 
 #define DEFINE_VAR_GET(parent, offset)                                                                                 \
   public:                                                                                                              \
-    inline decltype(auto) offset(const bool aUpdate = true)                                                            \
+    inline const decltype(m##offset) &offset(const bool aUpdate = true)                                                \
     {                                                                                                                  \
         if (aUpdate)                                                                                                   \
         {                                                                                                              \
@@ -46,7 +50,7 @@
     std::uintptr_t mBase{};                                                                                            \
                                                                                                                        \
   public:                                                                                                              \
-    [[nodiscard]] constexpr decltype(auto) Base() const noexcept                                                       \
+    [[nodiscard]] constexpr auto Base() noexcept                                                                       \
     {                                                                                                                  \
         return mBase;                                                                                                  \
     }                                                                                                                  \

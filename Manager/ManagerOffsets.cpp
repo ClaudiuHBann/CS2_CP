@@ -2,8 +2,6 @@
 #include "ManagerOffsets.h"
 #include "ManagerProcess.h"
 #include "ManagerSignatures.h"
-#include "Offsets.h"
-#include "Signatures.h"
 
 /* [[nodiscard]] */ void ManagerOffsets::Initialize()
 {

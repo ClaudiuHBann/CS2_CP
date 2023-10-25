@@ -1,7 +1,6 @@
 #pragma once
 
-#include "ManagerProcess.h"
-#include "Offsets.h"
+#include "Manager/ManagerProcess.h"
 
 class Pawn
 {

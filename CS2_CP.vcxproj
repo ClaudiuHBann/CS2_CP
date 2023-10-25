@@ -81,6 +81,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -100,6 +101,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -119,6 +121,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -138,6 +141,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -147,40 +151,40 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Entity.cpp" />
-    <ClCompile Include="ManagerGame.cpp" />
-    <ClCompile Include="IManager.cpp" />
+    <ClCompile Include="Entity\Entity.cpp" />
+    <ClCompile Include="Manager\ManagerGame.cpp" />
+    <ClCompile Include="Manager\IManager.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="ManagerOffsets.cpp" />
-    <ClCompile Include="ManagerProcess.cpp" />
+    <ClCompile Include="Manager\ManagerOffsets.cpp" />
+    <ClCompile Include="Manager\ManagerProcess.cpp" />
     <ClCompile Include="Context.cpp" />
-    <ClCompile Include="ManagerSignatures.cpp" />
-    <ClCompile Include="Offsets.cpp" />
+    <ClCompile Include="Manager\ManagerSignatures.cpp" />
+    <ClCompile Include="Utility\Offsets.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Controller.cpp" />
-    <ClCompile Include="Pawn.cpp" />
-    <ClCompile Include="Signatures.cpp" />
-    <ClCompile Include="Types.cpp" />
+    <ClCompile Include="Entity\Controller.cpp" />
+    <ClCompile Include="Entity\Pawn.cpp" />
+    <ClCompile Include="Utility\Signatures.cpp" />
+    <ClCompile Include="Utility\Types.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Entity.h" />
-    <ClInclude Include="ManagerGame.h" />
-    <ClInclude Include="IManager.h" />
-    <ClInclude Include="ManagerOffsets.h" />
-    <ClInclude Include="ManagerProcess.h" />
+    <ClInclude Include="Entity\Entity.h" />
+    <ClInclude Include="Manager\ManagerGame.h" />
+    <ClInclude Include="Manager\IManager.h" />
+    <ClInclude Include="Manager\ManagerOffsets.h" />
+    <ClInclude Include="Manager\ManagerProcess.h" />
     <ClInclude Include="Context.h" />
-    <ClInclude Include="ManagerSignatures.h" />
-    <ClInclude Include="Offsets.h" />
+    <ClInclude Include="Manager\ManagerSignatures.h" />
+    <ClInclude Include="Utility\Offsets.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="Controller.h" />
-    <ClInclude Include="Pawn.h" />
-    <ClInclude Include="Signatures.h" />
-    <ClInclude Include="Types.h" />
+    <ClInclude Include="Entity\Controller.h" />
+    <ClInclude Include="Entity\Pawn.h" />
+    <ClInclude Include="Utility\Signatures.h" />
+    <ClInclude Include="Utility\Types.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
