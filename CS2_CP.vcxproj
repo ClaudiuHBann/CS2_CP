@@ -154,6 +154,7 @@
     <ClCompile Include="Entity\EntityLocal.cpp" />
     <ClCompile Include="Entity\Entity.cpp" />
     <ClCompile Include="Manager\ManagerScripts.cpp" />
+    <ClCompile Include="Script\ScriptRadar.cpp" />
     <ClCompile Include="Script\ScriptBhop.cpp" />
     <ClCompile Include="Script\ScriptAntiFB.cpp" />
     <ClCompile Include="Script\IScript.cpp" />
@@ -180,6 +181,7 @@
     <ClInclude Include="Entity\EntityLocal.h" />
     <ClInclude Include="Entity\Entity.h" />
     <ClInclude Include="Manager\ManagerScripts.h" />
+    <ClInclude Include="Script\ScriptRadar.h" />
     <ClInclude Include="Script\ScriptBhop.h" />
     <ClInclude Include="Script\ScriptAntiFB.h" />
     <ClInclude Include="Script\IScript.h" />
