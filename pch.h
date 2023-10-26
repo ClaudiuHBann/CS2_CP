@@ -77,6 +77,7 @@ mp_plant_c4_anywhere 1; mp_restartgame 1;
 /*
     TODO:
          - add tracing
+         - ManagerGame should be a factory of entities
          - add eyeline
          - add triggerbot forceattack
          - add triggerbot scope

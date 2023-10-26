@@ -29,7 +29,10 @@ class ManagerProcess : public IManager
         return WriteProcessMemory(mProcess, reinterpret_cast<LPVOID>(aAddress), &aData, aSize, 0);
     }
 
-    [[nodiscard]] std::uintptr_t TraceAddress(std::uintptr_t aBase, std::vector<std::ptrdiff_t> aOffsets);
+    [[nodiscard]] inline auto TraceAddress(const std::uintptr_t aBase, const std::ptrdiff_t aOffset)
+    {
+        return ReadMemory<std::uintptr_t>(ReadMemory<std::uintptr_t>(aBase) + aOffset);
+    }
 
     [[nodiscard]] constexpr const Module &GetModuleClient() const noexcept
     {
