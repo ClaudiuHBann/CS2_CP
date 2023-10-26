@@ -6,6 +6,7 @@ ManagerScripts::ManagerScripts(ManagerProcess &aManagerProcess, ManagerGame &aMa
     auto scriptAntiFB = new ScriptAntiFB(aManagerProcess, aEntityLocal);
     auto scriptBhop = new ScriptBhop(aManagerGame, aEntityLocal);
     auto scriptRadar = new ScriptRadar(aManagerProcess, aManagerGame);
+    auto scriptTriggerbot = new ScriptTriggerbot(aManagerProcess, aManagerGame, aEntityLocal);
 
-    mScripts = {scriptAntiFB, scriptBhop, scriptRadar};
+    mScripts = {scriptAntiFB, scriptBhop, scriptRadar, scriptTriggerbot};
 }

@@ -77,6 +77,9 @@ mp_plant_c4_anywhere 1; mp_restartgame 1;
 /*
     TODO:
          - add tracing
+         - add eyeline
+         - add triggerbot forceattack
+         - add triggerbot scope
+         - add triggerbot delay
          - add namespaces
-         - IScript base class with pure virtual func Run with ScriptAntiFlashbang and a ManagerScripts
 */

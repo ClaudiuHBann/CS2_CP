@@ -14,6 +14,7 @@ namespace Entity
 {
 constexpr std::ptrdiff_t hPlayerPawn = 0x7BC;
 
+constexpr std::ptrdiff_t iIDEntIndex = 0x1524;
 constexpr std::ptrdiff_t entitySpottedState = 0x1618;
 constexpr std::ptrdiff_t bSpotted = 0x8;
 constexpr std::ptrdiff_t iHealth = 0x32C;

@@ -4,6 +4,7 @@
 #include "Script/ScriptAntiFB.h"
 #include "Script/ScriptBhop.h"
 #include "Script/ScriptRadar.h"
+#include "Script/ScriptTriggerbot.h"
 
 class ManagerScripts : public IManager
 {
@@ -16,5 +17,5 @@ class ManagerScripts : public IManager
     }
 
   private:
-    std::tuple<ScriptAntiFB *, ScriptBhop *, ScriptRadar *> mScripts{};
+    std::tuple<ScriptAntiFB *, ScriptBhop *, ScriptRadar *, ScriptTriggerbot *> mScripts{};
 };

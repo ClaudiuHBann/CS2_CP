@@ -29,6 +29,8 @@ class ManagerProcess : public IManager
         return WriteProcessMemory(mProcess, reinterpret_cast<LPVOID>(aAddress), &aData, aSize, 0);
     }
 
+    [[nodiscard]] std::uintptr_t TraceAddress(std::uintptr_t aBase, std::vector<std::ptrdiff_t> aOffsets);
+
     [[nodiscard]] constexpr const Module &GetModuleClient() const noexcept
     {
         return mModuleClient;

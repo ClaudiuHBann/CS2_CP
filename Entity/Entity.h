@@ -10,9 +10,16 @@ class Entity
     {
     }
 
-    inline void UpdatePawn()
+    inline void UpdatePawn(const std::uintptr_t aBase = 0)
     {
-        mPawn.Base(mManagerGame.GetLocalPawn());
+        if (aBase)
+        {
+            mPawn.Base(aBase);
+        }
+        else
+        {
+            mPawn.Base(mManagerGame.GetLocalPawn());
+        }
 
         mPawn.aimPunchAngle();
         mPawn.iHealth();

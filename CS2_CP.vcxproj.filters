@@ -3,77 +3,47 @@
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="ManagerOffsets.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="ManagerProcess.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="ManagerSignatures.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="Controller.cpp">
-      <Filter>Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="Pawn.cpp">
-      <Filter>Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="Types.cpp">
-      <Filter>Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="Entity.cpp">
-      <Filter>Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="Offsets.cpp">
-      <Filter>Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="Signatures.cpp">
-      <Filter>Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="IManager.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
     <ClCompile Include="Context.cpp" />
-    <ClCompile Include="ManagerGame.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
+    <ClCompile Include="Entity\EntityLocal.cpp" />
+    <ClCompile Include="Entity\Entity.cpp" />
+    <ClCompile Include="Manager\ManagerScripts.cpp" />
+    <ClCompile Include="Script\ScriptRadar.cpp" />
+    <ClCompile Include="Script\ScriptBhop.cpp" />
+    <ClCompile Include="Script\ScriptAntiFB.cpp" />
+    <ClCompile Include="Script\IScript.cpp" />
+    <ClCompile Include="Manager\ManagerGame.cpp" />
+    <ClCompile Include="Manager\IManager.cpp" />
+    <ClCompile Include="Manager\ManagerOffsets.cpp" />
+    <ClCompile Include="Manager\ManagerProcess.cpp" />
+    <ClCompile Include="Manager\ManagerSignatures.cpp" />
+    <ClCompile Include="Utility\Offsets.cpp" />
+    <ClCompile Include="Entity\Controller.cpp" />
+    <ClCompile Include="Entity\Pawn.cpp" />
+    <ClCompile Include="Utility\Signatures.cpp" />
+    <ClCompile Include="Utility\Types.cpp" />
+    <ClCompile Include="Script\ScriptTriggerbot.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
-    <ClInclude Include="ManagerSignatures.h">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="ManagerOffsets.h">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="ManagerProcess.h">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="Pawn.h">
-      <Filter>Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="Controller.h">
-      <Filter>Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="Types.h">
-      <Filter>Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Entity.h">
-      <Filter>Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="Signatures.h">
-      <Filter>Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Offsets.h">
-      <Filter>Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="IManager.h">
-      <Filter>Manager</Filter>
-    </ClInclude>
     <ClInclude Include="Context.h" />
-    <ClInclude Include="ManagerGame.h">
-      <Filter>Manager</Filter>
-    </ClInclude>
+    <ClInclude Include="Entity\EntityLocal.h" />
+    <ClInclude Include="Entity\Entity.h" />
+    <ClInclude Include="Manager\ManagerScripts.h" />
+    <ClInclude Include="Script\ScriptRadar.h" />
+    <ClInclude Include="Script\ScriptBhop.h" />
+    <ClInclude Include="Script\ScriptAntiFB.h" />
+    <ClInclude Include="Script\IScript.h" />
+    <ClInclude Include="Manager\ManagerGame.h" />
+    <ClInclude Include="Manager\IManager.h" />
+    <ClInclude Include="Manager\ManagerOffsets.h" />
+    <ClInclude Include="Manager\ManagerProcess.h" />
+    <ClInclude Include="Manager\ManagerSignatures.h" />
+    <ClInclude Include="Utility\Offsets.h" />
+    <ClInclude Include="Entity\Controller.h" />
+    <ClInclude Include="Entity\Pawn.h" />
+    <ClInclude Include="Utility\Signatures.h" />
+    <ClInclude Include="Utility\Types.h" />
+    <ClInclude Include="Script\ScriptTriggerbot.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Manager">

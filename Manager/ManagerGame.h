@@ -13,6 +13,11 @@ class ManagerGame : public IManager
 
     bool SetForceJump(const int aValue) const;
 
+    [[nodiscard]] constexpr auto GetEntityListAddress() const noexcept
+    {
+        return mEntityList;
+    }
+
     [[nodiscard]] inline auto GetEntityList() const
     {
         return mManagerProcess.ReadMemory<std::uintptr_t>(mEntityList);

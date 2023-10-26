@@ -22,13 +22,15 @@ class Context
         std::apply([](auto &&...aArgs) { (delete aArgs, ...); }, mManagers);
     }
 
-    void Run()
+    int Run()
     {
         while (true)
         {
             mEntityLocal->Update();
             GetManagerScripts().Update();
         }
+
+        return 0;
     }
 
   private:

@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "ScriptRadar.h"
-#include "Manager/ManagerGame.h"
-#include <Entity/Entity.h>
+#include "Entity/Entity.h"
 
 void ScriptRadar::Update()
 {
