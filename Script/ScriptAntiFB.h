@@ -14,7 +14,7 @@ class ScriptAntiFB : public IScript
   protected:
     inline void Update() override
     {
-        mManagerProcess.WriteMemory(mEntityLocal.GetEntity().GetPawn().Base() + Offsets::Entity::flFlashDuration, 0.f);
+        mManagerProcess.WriteMemory(mEntityLocal.GetPawn().Base() + Offsets::Entity::flFlashDuration, 0.f);
     }
 
   private:

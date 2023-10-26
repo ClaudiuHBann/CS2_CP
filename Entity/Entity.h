@@ -10,22 +10,7 @@ class Entity
     {
     }
 
-    inline void UpdatePawn(const std::uintptr_t aBase = 0)
-    {
-        if (aBase)
-        {
-            mPawn.Base(aBase);
-        }
-        else
-        {
-            mPawn.Base(mManagerGame.GetLocalPawn());
-        }
-
-        mPawn.aimPunchAngle();
-        mPawn.iHealth();
-        mPawn.iTeamNum();
-        mPawn.fFlags();
-    }
+    void UpdatePawn(const std::uintptr_t aBase);
 
     [[nodiscard]] constexpr Pawn &GetPawn() noexcept
     {

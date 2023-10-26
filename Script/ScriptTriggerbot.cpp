@@ -4,7 +4,7 @@
 void ScriptTriggerbot::Update()
 {
     DWORD uHandle = 0;
-    if (!mManagerProcess.ReadMemory(mEntityLocal.GetEntity().GetPawn().Base() + Offsets::Entity::iIDEntIndex, uHandle))
+    if (!mManagerProcess.ReadMemory(mEntityLocal.GetPawn().Base() + Offsets::Entity::iIDEntIndex, uHandle))
         return;
     if (uHandle == -1)
         return;
@@ -22,7 +22,7 @@ void ScriptTriggerbot::Update()
     Entity.UpdatePawn(PawnAddress);
 
     bool AllowShoot =
-        mEntityLocal.GetEntity().GetPawn().iTeamNum() != Entity.GetPawn().iTeamNum() && Entity.GetPawn().iHealth() > 0;
+        mEntityLocal.GetPawn().iTeamNum() != Entity.GetPawn().iTeamNum() && Entity.GetPawn().iHealth() > 0;
     if (!AllowShoot)
         return;
 

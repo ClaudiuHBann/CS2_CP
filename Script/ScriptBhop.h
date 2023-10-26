@@ -12,25 +12,7 @@ class ScriptBhop : public IScript
     }
 
   protected:
-    inline void Update() override
-    {
-        // TODO: explain magic numbers....
-        const bool hasFlagInAir = mEntityLocal.GetEntity().GetPawn().HasFlag(Pawn::Flags::IN_AIR);
-        if (GetAsyncKeyState(VK_SPACE) && hasFlagInAir)
-        {
-            mManagerGame.SetForceJump(65537);
-        }
-        else if (GetAsyncKeyState(VK_SPACE) && !hasFlagInAir)
-        {
-            mManagerGame.SetForceJump(256);
-            mManagerGame.SetForceJump(65537);
-            mManagerGame.SetForceJump(256);
-        }
-        else
-        {
-            mManagerGame.SetForceJump(256);
-        }
-    }
+    void Update() override;
 
   private:
     ManagerGame &mManagerGame;
