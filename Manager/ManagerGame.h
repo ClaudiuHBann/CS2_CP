@@ -11,11 +11,6 @@ class ManagerGame : public IManager
 
     void Initialize() override;
 
-    [[nodiscard]] constexpr auto GetForceJumpAddress() const noexcept
-    {
-        return mForceJump;
-    }
-
     bool SetForceJump(const int aValue) const;
 
     [[nodiscard]] inline auto GetEntityList() const

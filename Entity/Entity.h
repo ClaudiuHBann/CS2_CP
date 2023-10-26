@@ -6,18 +6,13 @@ class Entity
 {
   public:
     constexpr Entity(ManagerProcess &aManagerProcess, ManagerGame &aManagerGame) noexcept
-        : mPawn(aManagerProcess), mController(aManagerProcess, aManagerGame, mPawn)
+        : mManagerGame(aManagerGame), mPawn(aManagerProcess), mController(aManagerProcess, aManagerGame, mPawn)
     {
     }
 
-    inline void UpdatePawn(const std::uintptr_t aBase)
+    inline void UpdatePawn()
     {
-        if (!aBase)
-        {
-            return;
-        }
-
-        mPawn.Base(aBase);
+        mPawn.Base(mManagerGame.GetLocalPawn());
 
         mPawn.aimPunchAngle();
         mPawn.iHealth();
@@ -31,6 +26,8 @@ class Entity
     }
 
   private:
+    ManagerGame &mManagerGame;
+
     Pawn mPawn;
     Controller mController;
 };

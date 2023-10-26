@@ -1,6 +1,6 @@
 #pragma once
 
-// https://www.unknowncheats.me/forum/counter-strike-2-a/576077-counter-strike-2-reversal-structs-offsets-99.html
+// https://www.unknowncheats.me/forum/counter-strike-2-a/576077-counter-strike-2-reversal-structs-offsets-108.html
 
 // win32
 #define WIN32_LEAN_AND_MEAN
@@ -10,6 +10,7 @@
 
 // std
 #include <functional>
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -30,7 +31,7 @@
     {                                                                                                                  \
         if (aUpdate)                                                                                                   \
         {                                                                                                              \
-            m##offset = mManagerProcess.ReadMemory<decltype(m##offset)>(Offsets::parent::offset);                      \
+            m##offset = mManagerProcess.ReadMemory<decltype(m##offset)>(mBase + Offsets::parent::offset);              \
         }                                                                                                              \
                                                                                                                        \
         return m##offset;                                                                                              \

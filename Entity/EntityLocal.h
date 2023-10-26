@@ -12,7 +12,7 @@ class EntityLocal
 
     inline void Update()
     {
-        mEntity.UpdatePawn(mManagerGame.GetLocalPawn());
+        mEntity.UpdatePawn();
     }
 
     [[nodiscard]] constexpr Entity &GetEntity() noexcept

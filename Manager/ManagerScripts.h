@@ -2,11 +2,12 @@
 
 #include "IManager.h"
 #include "Script/ScriptAntiFB.h"
+#include "Script/ScriptBhop.h"
 
 class ManagerScripts : public IManager
 {
   public:
-    ManagerScripts(ManagerProcess &aManagerProcess, EntityLocal &aEntityLocal);
+    ManagerScripts(ManagerProcess &aManagerProcess, ManagerGame &aManagerGame, EntityLocal &aEntityLocal);
 
     constexpr void Update()
     {
@@ -14,5 +15,5 @@ class ManagerScripts : public IManager
     }
 
   private:
-    std::tuple<ScriptAntiFB *> mScripts{};
+    std::tuple<ScriptAntiFB *, ScriptBhop *> mScripts{};
 };
